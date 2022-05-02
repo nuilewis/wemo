@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wemo/screens/homescreen/homescreen.dart';
+import 'package:wemo/theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -13,24 +15,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Wemo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: HomeScreen(),
+      theme: wemoLightTheme(context),
+      home: const HomeScreen(),
+      routes: {
+        HomeScreen.id: (context)=> const HomeScreen(),
+      },
     );
   }
 }
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
-
-  @override
-  _HomeScreenState createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
-  }
-}
