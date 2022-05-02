@@ -34,6 +34,13 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  firebase_core: ^1.15.0
+  shared_preferences: ^2.0.13
+  qr_flutter: ^4.0.0
+  flutter_svg: ^1.0.3
+  provider: ^6.0.2
+
+
 
 dev_dependencies:
   flutter_test:
@@ -77,25 +84,25 @@ flutter:
   fonts:
     - family: Urbanist
       fonts:
-        - asset: fonts/Urbanist-Black.ttf
-        - asset: fonts/Urbanist-BlackItalic.ttf
-        - asset: fonts/Urbanist-Bold.ttf
-        - asset: fonts/Urbanist-BoldItalic.ttf
-        - asset: fonts/Urbanist-ExtraBold.ttf
-        - asset: fonts/Urbanist-ExtraBoldItalic.ttf
-        - asset: fonts/Urbanist-ExtraLight.ttf
-        - asset: fonts/Urbanist-ExtraLightItalic.ttf
-        - asset: fonts/Urbanist-ExtraLightItalic.ttf
-        - asset: fonts/Urbanist-Italic.ttf
-        - asset: fonts/Urbanist-Light.ttf
-        - asset: fonts/Urbanist-LightItalic.ttf
-        - asset: fonts/Urbanist-Medium.ttf
-        - asset: fonts/Urbanist-MediumItalic.ttf
-        - asset: fonts/Urbanist-Regular.ttf
-        - asset: fonts/Urbanist-SemiBold.ttf
-        - asset: fonts/Urbanist-SemiBoldItalic.ttf
-        - asset: fonts/Urbanist-Thin.ttf
-        - asset: fonts/Urbanist-ThinItalic.ttf
+        - asset: assets/fonts/Urbanist-Black.ttf
+        - asset: assets/fonts/Urbanist-BlackItalic.ttf
+        - asset: assets/fonts/Urbanist-Bold.ttf
+        - asset: assets/fonts/Urbanist-BoldItalic.ttf
+        - asset: assets/fonts/Urbanist-ExtraBold.ttf
+        - asset: assets/fonts/Urbanist-ExtraBoldItalic.ttf
+        - asset: assets/fonts/Urbanist-ExtraLight.ttf
+        - asset: assets/fonts/Urbanist-ExtraLightItalic.ttf
+        - asset: assets/fonts/Urbanist-ExtraLightItalic.ttf
+        - asset: assets/fonts/Urbanist-Italic.ttf
+        - asset: assets/fonts/Urbanist-Light.ttf
+        - asset: assets/fonts/Urbanist-LightItalic.ttf
+        - asset: assets/fonts/Urbanist-Medium.ttf
+        - asset: assets/fonts/Urbanist-MediumItalic.ttf
+        - asset: assets/fonts/Urbanist-Regular.ttf
+        - asset: assets/fonts/Urbanist-SemiBold.ttf
+        - asset: assets/fonts/Urbanist-SemiBoldItalic.ttf
+        - asset: assets/fonts/Urbanist-Thin.ttf
+        - asset: assets/fonts/Urbanist-ThinItalic.ttf
 
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

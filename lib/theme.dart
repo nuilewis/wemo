@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'constants.dart';
 
 ///---------------Light Theme----------////
-ThemeData sicklerLightTheme(BuildContext context) {
+ThemeData wemoLightTheme(BuildContext context) {
   return ThemeData(
       appBarTheme: appBarTheme,
-      primaryColor: kPurple80,
-      primaryColorLight: kPurple40,
+      primaryColor: kPurple,
+      primaryColorLight: kPurple80,
       primaryColorDark: kPurple,
       scaffoldBackgroundColor: Colors.white,
       brightness: Brightness.light,
       backgroundColor: Colors.white,
       iconTheme: const IconThemeData(color: kDark),
       primaryIconTheme: const IconThemeData(color: kDark),
-      fontFamily: 'Poppins',
+      fontFamily: 'Urbanist',
       textTheme: TextTheme(
         bodyText1: kBodyBold.copyWith(color: kDark),
         bodyText2: kBody.copyWith(color: kDark),
@@ -26,18 +26,18 @@ ThemeData sicklerLightTheme(BuildContext context) {
 
 ///-----------------Dark Theme--------------////
 
-ThemeData sicklerDarkTheme(BuildContext context) {
+ThemeData wemoDarkTheme(BuildContext context) {
   return ThemeData(
       appBarTheme: appBarTheme,
-      primaryColor: kPurple80,
-      primaryColorLight: kPurple40,
+      primaryColor: kPurple,
+      primaryColorLight: kPurple80,
       primaryColorDark: kPurple,
       scaffoldBackgroundColor: Colors.black,
       brightness: Brightness.dark,
       backgroundColor: kDark,
       iconTheme: const IconThemeData(color: Colors.white),
       primaryIconTheme: const IconThemeData(color: Colors.white),
-      fontFamily: 'Poppins',
+      fontFamily: 'Urbanist',
       textTheme: TextTheme(
         bodyText1: kBodyBold.copyWith(color: Colors.white),
         bodyText2: kBody.copyWith(color: Colors.white),

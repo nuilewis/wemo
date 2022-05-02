@@ -24,14 +24,6 @@ const Color kDark60 = Color(0x80353535);
 const Color kDark40 = Color(0x4D353535);
 const Color kDark20 = Color(0x1A353535);
 
-// const Color kDark = Color(0xFF353535);
-// const Color kDark80 = Color(0xFF4C4C4C);
-// const Color kDark60 = Color(0xFFBDBDBD);
-// const Color kDark40 = Color(0xFFD7D7D7);
-// const Color kDark20 = Color(0xFFF4F4F4);
-
-///------Paddings-------///
-
 const double kDefaultPadding = 16.0;
 const double kDefaultPadding2x = 32.0;
 
