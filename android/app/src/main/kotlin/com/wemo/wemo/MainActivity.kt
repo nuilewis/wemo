@@ -1,4 +1,4 @@
-package com.wemo.wemo.wemo
+package com.wemo.wemo
 
 import io.flutter.embedding.android.FlutterActivity
 
