@@ -11,5 +11,5 @@ class Transaction {
 
 enum TransactionType{
   transactionType.send;
-  transactionType.recived;
+  transactionType.received;
 }
