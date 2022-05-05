@@ -39,6 +39,10 @@ dependencies:
   qr_flutter: ^4.0.0
   flutter_svg: ^1.0.3
   provider: ^6.0.2
+  ussd_advanced: ^0.1.2
+  qr_code_scanner: ^0.7.0
+
+ 
 
 
 
