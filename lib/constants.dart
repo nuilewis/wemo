@@ -49,7 +49,7 @@ AppBarTheme appBarTheme = const AppBarTheme(
 
 ///----------Text Form Field styles ---------////
 
-InputDecoration sicklerTextFieldDecoration = InputDecoration(
+InputDecoration wemoTextFieldDecoration = InputDecoration(
   border: OutlineInputBorder(
     gapPadding: 0,
     borderSide: BorderSide.none,
@@ -58,5 +58,5 @@ InputDecoration sicklerTextFieldDecoration = InputDecoration(
   isDense: false,
   filled: true,
   hintStyle: kBody,
-  fillColor: Colors.white.withOpacity(.2),
+  fillColor: kPurple20,
 );

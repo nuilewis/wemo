@@ -21,7 +21,8 @@ ThemeData wemoLightTheme(BuildContext context) {
         headline2: kHeadingLight.copyWith(color: kDark),
       ),
       colorScheme: const ColorScheme.light().copyWith(secondary: kFuchsia),
-      cardColor: kDark20);
+      cardColor: kDark20,
+      canvasColor: Colors.transparent);
 }
 
 ///-----------------Dark Theme--------------////
@@ -45,5 +46,6 @@ ThemeData wemoDarkTheme(BuildContext context) {
         headline2: kHeadingLight.copyWith(color: Colors.white),
       ),
       colorScheme: const ColorScheme.dark().copyWith(secondary: kFuchsia),
-      cardColor: kDark80);
+      cardColor: kDark80,
+      canvasColor: Colors.transparent);
 }
