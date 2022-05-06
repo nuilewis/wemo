@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:wemo/providers/number_provider.dart';
 import 'package:wemo/screens/homescreen/homescreen.dart';
+import 'package:wemo/screens/numbersetupscreen/addnumberscreen.dart';
+import 'package:wemo/screens/splashscreen/splashscreen.dart';
 import 'package:wemo/theme.dart';
 
 void main() {
@@ -12,15 +16,23 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Wemo',
-      debugShowCheckedModeBanner: false,
-      theme: wemoLightTheme(context),
-      home: const HomeScreen(),
-      routes: {
-        HomeScreen.id: (context)=> const HomeScreen(),
-      },
+    return MultiProvider(
+      providers: [
+
+  
+        ChangeNotifierProvider<MomoNumberData>(create: (context)=> MomoNumberData()),
+      ],
+      child: MaterialApp(
+        title: 'Wemo',
+        debugShowCheckedModeBanner: false,
+        theme: wemoLightTheme(context),
+        home: const SplashScreen(),
+        routes: {
+          HomeScreen.id: (context) => const HomeScreen(),
+          SplashScreen.id: (context) => const SplashScreen(),
+          AddNumberScreen.id:(context) => const AddNumberScreen(),
+        },
+      ),
     );
   }
 }
-
