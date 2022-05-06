@@ -1,8 +1,8 @@
 
-class NumberInfo {
+class MomoNumber {
 
   final int number;
  final String name;
 
-  NumberInfo({required this.number, required this.name});
+  MomoNumber({required this.number, required this.name});
 }
