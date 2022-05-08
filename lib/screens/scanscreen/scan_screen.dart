@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:wemo/constants.dart';
 
 class ScanScreen extends StatefulWidget {
+  static const id = "scan screen";
   const ScanScreen({Key? key}) : super(key: key);
 
   @override
@@ -26,6 +28,9 @@ class _ScanScreenState extends State<ScanScreen> {
         result = scanData;
       });
       print("scan data result is ${result?.code}");
+      HapticFeedback.heavyImpact();
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(result?.code ?? "null")));
     });
   }
 
