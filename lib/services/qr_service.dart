@@ -1,22 +1,15 @@
+import 'package:flutter/foundation.dart';
 
 class QrService {
-  ///INterpolate name and number into a single string to feed to tthe GR generator
+  ///Interpolate name and number into a single string to feed to tthe GR generator
 
-  String joinNameNUmber(int number, String name) {
-    String joinedString = "";
+  String joinNameNUmber({required int number, required String name}) {
     String numToString = number.toString();
 
-    ///check if number includes country code, ie +237
-
-    if (numToString.startsWith("237")) {
-//remove country code and join the name;
-      joinedString = numToString.substring(3) + name;
-    } else if (numToString.startsWith("+237")) {
-      joinedString = numToString.substring(4) + name;
-    } else if (numToString.startsWith("6")) {
-      joinedString = numToString + name;
-    }
-
+    String joinedString = numToString + name;
+    print("joined string is $joinedString");
     return joinedString;
   }
+
+  splitNameNumber({required String joinedString}) {}
 }
