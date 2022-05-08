@@ -50,6 +50,14 @@ AppBarTheme appBarTheme = const AppBarTheme(
 ///----------Text Form Field styles ---------////
 
 InputDecoration wemoTextFieldDecoration = InputDecoration(
+  errorStyle: kBody.copyWith(color: kFuchsia),
+  
+  errorBorder:OutlineInputBorder(
+    
+    gapPadding: 4,
+    borderSide: const BorderSide(color: kFuchsia, width: 1),
+    borderRadius: BorderRadius.circular(kDefaultPadding),
+  ), 
   border: OutlineInputBorder(
     gapPadding: 0,
     borderSide: BorderSide.none,
@@ -60,3 +68,4 @@ InputDecoration wemoTextFieldDecoration = InputDecoration(
   hintStyle: kBody,
   fillColor: kPurple20,
 );
+
