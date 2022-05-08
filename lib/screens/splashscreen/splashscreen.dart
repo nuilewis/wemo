@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wemo/constants.dart';
-import 'package:wemo/screens/numbersetupscreen/addnumberscreen.dart';
-
-import '../homescreen/homescreen.dart';
+import 'package:wemo/screens/initialsetupflowscreens/addnumberscreen.dart';
 import 'components/round_button.dart';
 
 class SplashScreen extends StatelessWidget {
