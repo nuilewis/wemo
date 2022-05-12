@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:wemo/providers/number_provider.dart';
+import 'package:wemo/providers/momo_num_provider.dart';
 import 'package:wemo/screens/homescreen/homescreen.dart';
 import 'package:wemo/screens/recievescreen/components/show_qr.dart';
 import 'package:wemo/services/qr_service.dart';
@@ -37,13 +37,14 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
     Size screenSize = MediaQuery.of(context).size;
     return Consumer<MomoNumberData>(builder: (context, phoneNumData, child) {
       return Container(
-        height: screenSize.height * .9,
+        height: screenSize.height * .75,
         decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            borderRadius: const BorderRadius.only(
-              topLeft: Radius.circular(28),
-              topRight: Radius.circular(28),
-            )),
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(28),
+            topRight: Radius.circular(28),
+          ),
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
           child: Column(
@@ -61,21 +62,31 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
               const SizedBox(height: 25),
               Text(
                 "Here's your QR Code",
+                style: Theme.of(context).textTheme.headline1,
+              ),
+              const Spacer(),
+              ShowQRCode(
+                data: QrService().joinNameNUmber(
+                    number: phoneNumData.momoNumberList[index].number,
+                    name: phoneNumData.momoNumberList[index].name),
+              ),
+              const SizedBox(height: kDefaultPadding),
+              Text(
+                phoneNumData.momoNumberList[index].name,
                 style: Theme.of(context)
                     .textTheme
                     .headline1!
                     .copyWith(color: kPurple),
               ),
-              const Spacer(),
-              ShowQRCode(
-                  data: QrService().joinNameNUmber(
-                      number: phoneNumData.momoNumberList[index].number,
-                      name: phoneNumData.momoNumberList[index].name)),
+              Text(
+                phoneNumData.momoNumberList[index].number.toString(),
+                style: Theme.of(context).textTheme.headline2,
+              ),
               const Spacer(
                 flex: 2,
               ),
               WemoButton(
-                textColor: Colors.white,
+                  textColor: Colors.white,
                   title: "Print to PDF",
                   onPressed: () {
                     HapticFeedback.lightImpact();
