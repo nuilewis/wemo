@@ -1,13 +1,12 @@
-
-enum TransactionType{
+enum TransactionType {
   sent,
   recievd,
 }
 
-enum Network{
- mtn,
- orange,
- camtel,
- nexttel,
- yoomee,
+enum NetworkType {
+  mtn,
+  orange,
+  camtel,
+  nexttel,
+  yoomee,
 }
