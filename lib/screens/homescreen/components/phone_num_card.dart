@@ -19,7 +19,7 @@ class PhoneNumberCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
     return Container(
-      margin: EdgeInsets.only(right: kDefaultPadding),
+      margin: const EdgeInsets.only(right: kDefaultPadding),
       height: 120,
       decoration: BoxDecoration(
           boxShadow:  const [
