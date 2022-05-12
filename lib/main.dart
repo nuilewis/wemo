@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:wemo/providers/number_provider.dart';
+import 'package:wemo/providers/momo_num_provider.dart';
+import 'package:wemo/providers/send_money_provider.dart';
+import 'package:wemo/providers/transaction_provider.dart';
 import 'package:wemo/screens/homescreen/homescreen.dart';
 import 'package:wemo/screens/initialsetupflowscreens/addnumberscreen.dart';
 import 'package:wemo/screens/scanscreen/scan_screen.dart';
@@ -19,26 +21,28 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-
-  
-        ChangeNotifierProvider<MomoNumberData>(create: (context)=> MomoNumberData()),
+        ChangeNotifierProvider<MomoNumberData>(
+            create: (context) => MomoNumberData()),
+        ChangeNotifierProvider<TransactionData>(
+            create: (context) => TransactionData()),
+        ChangeNotifierProvider<SendMoneyData>(
+            create: (context) => SendMoneyData()),
       ],
       child: MaterialApp(
         title: 'Wemo',
         debugShowCheckedModeBanner: false,
         theme: wemoLightTheme(context),
         darkTheme: wemoDarkTheme(context),
-        
         home: const SplashScreen(),
         routes: {
           HomeScreen.id: (context) => const HomeScreen(),
           SplashScreen.id: (context) => const SplashScreen(),
-          AddNumberScreen.id:(context) =>  AddNumberScreen(
-            formkey: GlobalKey<FormState>(),
-            nameKey: GlobalKey(),
-            numberKey: GlobalKey(),
-          ),
-          ScanScreen.id:(context) => const ScanScreen(),
+          AddNumberScreen.id: (context) => AddNumberScreen(
+                formkey: GlobalKey<FormState>(),
+                nameKey: GlobalKey(),
+                numberKey: GlobalKey(),
+              ),
+          ScanScreen.id: (context) => const ScanScreen(),
         },
       ),
     );

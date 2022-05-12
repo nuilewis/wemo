@@ -51,13 +51,11 @@ AppBarTheme appBarTheme = const AppBarTheme(
 
 InputDecoration wemoTextFieldDecoration = InputDecoration(
   errorStyle: kBody.copyWith(color: kFuchsia),
-  
-  errorBorder:OutlineInputBorder(
-    
+  errorBorder: OutlineInputBorder(
     gapPadding: 4,
     borderSide: const BorderSide(color: kFuchsia, width: 1),
     borderRadius: BorderRadius.circular(kDefaultPadding),
-  ), 
+  ),
   border: OutlineInputBorder(
     gapPadding: 0,
     borderSide: BorderSide.none,
@@ -69,3 +67,19 @@ InputDecoration wemoTextFieldDecoration = InputDecoration(
   fillColor: kPurple20,
 );
 
+///-------DateTime Constants -------////
+///
+Map<int, String> monthsOfYear = {
+  1: "January",
+  2: "February",
+  3: "March",
+  4: "April",
+  5: "May",
+  6: "June",
+  7: "July",
+  8: "August",
+  9: "September",
+  10: "October",
+  11: "November",
+  12: "December",
+};
