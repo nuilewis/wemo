@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
-import 'package:wemo/providers/number_provider.dart';
+import 'package:wemo/providers/momo_num_provider.dart';
+import 'package:wemo/screens/initialsetupflowscreens/bottomsheets.dart';
 import '../../constants.dart';
 import '../../global_components/wemo_button.dart';
 import 'show_qr_screen.dart';
@@ -14,7 +15,12 @@ class AddNumberScreen extends StatefulWidget {
   final GlobalKey<FormState> formkey;
   final Key nameKey;
   final Key numberKey;
-  const AddNumberScreen({Key? key, required this.formkey, required this.nameKey, required this.numberKey}) : super(key: key);
+  const AddNumberScreen(
+      {Key? key,
+      required this.formkey,
+      required this.nameKey,
+      required this.numberKey})
+      : super(key: key);
 
   @override
   State<AddNumberScreen> createState() => _AddNumberScreenState();
@@ -23,20 +29,17 @@ class AddNumberScreen extends StatefulWidget {
 class _AddNumberScreenState extends State<AddNumberScreen> {
   final TextEditingController name = TextEditingController();
   final TextEditingController number = TextEditingController();
-  late  final GlobalKey<FormState> _formKey;
+  late final GlobalKey<FormState> _formKey;
   late Key nameKey;
   late Key numberKey;
 
-@override
+  @override
   void initState() {
-  
     super.initState();
     _formKey = widget.formkey;
     nameKey = widget.nameKey;
     numberKey = widget.numberKey;
-
   }
-
 
   @override
   void dispose() {
@@ -47,23 +50,22 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
 
   //method to show the different bottom sheets
 
-  void openSheet( int index) async {
-  List<Widget> bottomSheetPages = [
-    const VerifyNumberScreen(),
-    const VerificationSuccessScreen(),
+  void openSheet(int index) async {
+    List<Widget> bottomSheetPages = [
+      const VerifyNumberScreen(),
+      const VerificationSuccessScreen(),
       const ShowQRCodeScreen(),
-  ];
+    ];
     showModalBottomSheet(
         isDismissible: true,
         isScrollControlled: true,
         context: context,
-        builder: (context) =>  bottomSheetPages[index]);
+        builder: (context) => bottomSheetPages[index]);
   }
 
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-   
 
     return Consumer<MomoNumberData>(
       builder: (context, momoNumData, child) {
@@ -135,9 +137,7 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                         maxLengthEnforcement: MaxLengthEnforcement.enforced,
                         controller: number,
                         validator: (value) {
-                          if (value == null ||
-                              value.length < 9
-                      ) {
+                          if (value == null || value.length < 9) {
                             ///if number is not avalid phone number, then make the form field red
 
                             return "Please enter a valid phone number.";
@@ -163,16 +163,16 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
 
                           ///Validate the input-ted values if they are valid
                           if (_formKey.currentState!.validate()) {
-                            //If all the form are validated, then process with the rest of the logic
+                            //If all the form are validated, then proceed with the rest of the logic
 
                             momoNumData.addMomoNUmber(
-                                name: name.text.toUpperCase(), number: number.text);
+                                name: name.text.toUpperCase(),
+                                number: number.text);
                             showModalBottomSheet(
                                 isDismissible: true,
                                 isScrollControlled: true,
                                 context: context,
-                                builder: (context) =>
-                                    const ShowQRCodeScreen());
+                                builder: (context) => const ShowQRCodeScreen());
                             // openSheet(2);
                           }
                         },
