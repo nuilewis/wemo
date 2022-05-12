@@ -1,11 +1,13 @@
+import 'package:wemo/enums/wemo_enums.dart';
+
 class Transaction {
   final String name;
   final int number;
-  final String network;
+  final NetworkType network;
   final DateTime time;
   final int amount;
   final int charges;
-  final bool transactionType;
+  final TransactionType transactionType;
 
   Transaction(
       {required this.name,
@@ -16,4 +18,3 @@ class Transaction {
       required this.charges,
       required this.transactionType});
 }
-
