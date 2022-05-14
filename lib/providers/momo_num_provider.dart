@@ -12,6 +12,8 @@ class MomoNumberData extends ChangeNotifier {
         name: name,
         number: numToInt,
         network: TransactionService.determinNetwork(numToInt)));
+
+    print("momoList is $momoNumberList");
     notifyListeners();
   }
 

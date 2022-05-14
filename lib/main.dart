@@ -41,6 +41,7 @@ class MyApp extends StatelessWidget {
                 formkey: GlobalKey<FormState>(),
                 nameKey: GlobalKey(),
                 numberKey: GlobalKey(),
+                isCalledFromHomeScreen: false,
               ),
           ScanScreen.id: (context) => const ScanScreen(),
         },
