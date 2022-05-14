@@ -42,6 +42,7 @@ dependencies:
   provider: ^6.0.2
   ussd_advanced: ^1.0.0
   qr_code_scanner: ^0.7.0
+  expandable_page_view: ^1.0.13
 
  
 
