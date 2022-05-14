@@ -1,11 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
+import 'package:wemo/global_components/wemo_button.dart';
+import 'package:wemo/services/transaction_service.dart';
 import '../../constants.dart';
-import '../../global_components/wemo_button_small.dart';
 import '../../providers/send_money_provider.dart';
-
 
 class InputAmountAndPinDialog extends StatefulWidget {
   final String recieverName;
@@ -32,6 +32,8 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
   final Key amountKey = GlobalKey();
   final Key pinKey = GlobalKey();
 
+  bool addCharges = false;
+
   @override
   void dispose() {
     super.dispose();
@@ -50,19 +52,23 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const SizedBox(height: kDefaultPadding,),
-                    Align(
+                const SizedBox(
+                  height: kDefaultPadding,
+                ),
+                Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
                     "Amount",
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
-                const SizedBox(height: 5,),
-            
+                const SizedBox(
+                  height: 5,
+                ),
+
                 TextFormField(
                   key: amountKey,
-                                  textAlign: TextAlign.center,
+                  textAlign: TextAlign.center,
                   style: Theme.of(context)
                       .textTheme
                       .bodyText1!
@@ -71,11 +77,11 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                   controller: amountController,
                   decoration:
                       wemoTextFieldDecoration.copyWith(hintText: "Amount"),
-                      validator:     (value) {
-                    if (value == null || value.isEmpty || value =="0" ) {
+                  validator: (value) {
+                    if (value == null || value.isEmpty || value == "0") {
                       return "Please enter an Amount";
                     }
-                    
+
                     return null;
                   },
                 ),
@@ -87,8 +93,10 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
-                const SizedBox(height: 5,),
-            
+                const SizedBox(
+                  height: 5,
+                ),
+
                 ///Pin Field
                 TextFormField(
                   obscureText: true,
@@ -109,49 +117,79 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                     return null;
                   },
                 ),
-                const SizedBox(height: kDefaultPadding2x,),
-                WemoButtonSmall(
+                const SizedBox(
+                  height: kDefaultPadding,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Add Withdrawal Charges?",
+                      style: Theme.of(context).textTheme.bodyText2,
+                    ),
+                    CupertinoSwitch(
+                      value: addCharges,
+                      activeColor: kPurple,
+                      trackColor: kDark20,
+                      thumbColor: Colors.white,
+                      onChanged: (bool value) {
+                        setState(() {
+                          addCharges = value;
+                        });
+                      },
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: kDefaultPadding2x,
+                ),
+                WemoButton(
+                  isSmall: false,
                   textColor: Colors.white,
                   title: "Send",
                   showIcon: true,
                   iconLink: "assets/svg/send_icon.svg",
                   onPressed: () {
-                     int? amount = int.tryParse(amountController.text);
-                      int? pin = int.tryParse(pinController.text);
+                    int? amount = int.tryParse(amountController.text);
+
                     if (_formKey.currentState!.validate()) {
-                      ///If text inputs are valid, then procedd with the following logic
-            
+                      ///If text inputs are valid, then process with the following logic
+
                       HapticFeedback.lightImpact();
                       Feedback.forTap(context);
-            
+
                       ////Take values from text controllers and assign it to the variables to send.
-            
-            
-            
+
                       ///These values will actually never be nullable because the text validator will check first
-            
+
                       ///adding all details of the person we are sending money to to the provider
                       sendMoneyData.sendMoneyToPerson(
-                        amount: amount!,
+                        amount: addCharges
+                            ? TransactionService.calculateCahrges(amount!)
+                            : amount!,
                         pin: pinController.text,
                         name: widget.recieverName,
                         number: widget.recievernumber.toString(),
                       );
-            
+
                       ///Now Navigate to the next confrimation dialog
                       widget.navigateToNextPage();
                     }
                   },
                 ),
-                const SizedBox(height: kDefaultPadding,),
-                WemoButtonSmall(
-                  textColor: Colors.white,
+                const SizedBox(
+                  height: kDefaultPadding,
+                ),
+                WemoButton(
+                  isSmall: true,
+                  isSecondary: true,
                   title: "Cancel",
                   showIcon: false,
                   onPressed: () {
                     HapticFeedback.lightImpact();
                     Feedback.forTap(context);
-            
+
                     ///Todo: pop the dialog
                   },
                 ),
