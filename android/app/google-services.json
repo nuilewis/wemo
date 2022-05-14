@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "923384418925",
+    "project_id": "wemo-df013",
+    "storage_bucket": "wemo-df013.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:923384418925:android:2803ad433d1dd054d66564",
+        "android_client_info": {
+          "package_name": "com.wemo.wemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "923384418925-sef49e1saj8b36vvoh5lbuarmoemqmij.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAQM40zdvYSNtHqlANEfXsSw1T1HGupY7A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "923384418925-sef49e1saj8b36vvoh5lbuarmoemqmij.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
