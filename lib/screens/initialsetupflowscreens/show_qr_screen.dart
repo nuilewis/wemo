@@ -12,19 +12,30 @@ import '../../global_components/wemo_button.dart';
 class ShowQRCodeScreen extends StatefulWidget {
   static const id = "verification success";
   final int? index;
-  const ShowQRCodeScreen({Key? key, this.index}) : super(key: key);
+
+  final VoidCallback? navigateToNextPage;
+  final VoidCallback? navigateToPreviousPage;
+  final bool? isCalledFromHomeScreen;
+
+  const ShowQRCodeScreen({
+    Key? key,
+    this.index,
+    this.navigateToNextPage,
+    this.navigateToPreviousPage,
+    this.isCalledFromHomeScreen = false,
+  }) : super(key: key);
 
   @override
   State<ShowQRCodeScreen> createState() => _ShowQRCodeScreenState();
 }
 
 class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
-  late int index;
+  int? index;
 
   @override
   void initState() {
     super.initState();
-    index = widget.index ?? 0;
+    index = widget.index;
   }
 
   ///setting index to zero so it will get the first number in the list of numbers since this will be the first
@@ -35,31 +46,18 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return Consumer<MomoNumberData>(builder: (context, phoneNumData, child) {
-      return Container(
+    return Consumer<MomoNumberData>(builder: (context, momoNumData, child) {
+      //if an index is not provided, then show the last
+
+      index ??=
+          momoNumData.momoNumberList.indexOf(momoNumData.momoNumberList.last);
+      return SizedBox(
         height: screenSize.height * .75,
-        decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(28),
-            topRight: Radius.circular(28),
-          ),
-        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                margin: const EdgeInsets.only(top: 7),
-                width: 50,
-                height: 5,
-                decoration: BoxDecoration(
-                  color: kPurple20,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              const SizedBox(height: 25),
               Text(
                 "Here's your QR Code",
                 style: Theme.of(context).textTheme.headline1,
@@ -67,19 +65,19 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
               const Spacer(),
               ShowQRCode(
                 data: QrService().joinNameNUmber(
-                    number: phoneNumData.momoNumberList[index].number,
-                    name: phoneNumData.momoNumberList[index].name),
+                    number: momoNumData.momoNumberList[index!].number,
+                    name: momoNumData.momoNumberList[index!].name),
               ),
               const SizedBox(height: kDefaultPadding),
               Text(
-                phoneNumData.momoNumberList[index].name,
+                momoNumData.momoNumberList[index!].name,
                 style: Theme.of(context)
                     .textTheme
                     .headline1!
                     .copyWith(color: kPurple),
               ),
               Text(
-                phoneNumData.momoNumberList[index].number.toString(),
+                momoNumData.momoNumberList[index!].number.toString(),
                 style: Theme.of(context).textTheme.headline2,
               ),
               const Spacer(
@@ -93,7 +91,25 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
                     Feedback.forTap(context);
 
                     ///Todo: add methods to print to PDF.
-                    Navigator.popAndPushNamed(context, HomeScreen.id);
+                    ///
+                    if (widget.isCalledFromHomeScreen == true) {
+                      debugPrint(
+                          "qr screen is popping until to return to homescreen");
+                      Navigator.popUntil(
+                          context, ModalRoute.withName(HomeScreen.id));
+
+                      /// of the bottom sheet was called from the homescreen ie the user added a number,
+                      /// then instead of pushing a new homescreen over the old homescreen, rather pop the current
+                      /// bottomsheet plus the underlying add number page.
+                    } else {
+                      debugPrint("qr screen is pushing homescreen");
+                      Navigator.popAndPushNamed(context, HomeScreen.id);
+
+                      ///In this case, the bottom sheet was called from the initial setup/splash screen
+                      ///therefore no homesceen has been called to the navigator stack, and popping both pages as done
+                      ///above will result to a black screen being displayed, to prevent this, this section
+                      ///will rather push to the homescreen.
+                    }
                   }),
               const SizedBox(
                 height: 40,
