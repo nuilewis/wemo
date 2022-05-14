@@ -29,4 +29,12 @@ class TransactionService {
 
     return networkType;
   }
+
+  static int calculateCahrges(int amount) {
+    ///Todo: compute charges
+    ///
+    int amountWithCharges = 0;
+
+    return amountWithCharges;
+  }
 }
