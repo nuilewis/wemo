@@ -15,11 +15,13 @@ class AddNumberScreen extends StatefulWidget {
   final GlobalKey<FormState> formkey;
   final Key nameKey;
   final Key numberKey;
+  final bool isCalledFromHomeScreen;
   const AddNumberScreen(
       {Key? key,
       required this.formkey,
       required this.nameKey,
-      required this.numberKey})
+      required this.numberKey,
+      required this.isCalledFromHomeScreen})
       : super(key: key);
 
   @override
@@ -46,21 +48,6 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
     super.dispose();
     name.dispose();
     number.dispose();
-  }
-
-  //method to show the different bottom sheets
-
-  void openSheet(int index) async {
-    List<Widget> bottomSheetPages = [
-      const VerifyNumberScreen(),
-      const VerificationSuccessScreen(),
-      const ShowQRCodeScreen(),
-    ];
-    showModalBottomSheet(
-        isDismissible: true,
-        isScrollControlled: true,
-        context: context,
-        builder: (context) => bottomSheetPages[index]);
   }
 
   @override
@@ -155,7 +142,6 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                       ),
                       const Spacer(flex: 2),
                       WemoButton(
-                        textColor: Colors.white,
                         title: "Send Verification SMS",
                         onPressed: () {
                           Feedback.forTap(context);
@@ -168,11 +154,16 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                             momoNumData.addMomoNUmber(
                                 name: name.text.toUpperCase(),
                                 number: number.text);
+
                             showModalBottomSheet(
-                                isDismissible: true,
+                                useRootNavigator: true,
+                                isDismissible: false,
                                 isScrollControlled: true,
                                 context: context,
-                                builder: (context) => const ShowQRCodeScreen());
+                                builder: (context) => WemoBottomSheets(
+                                      isCalledFromHomeScreen:
+                                          widget.isCalledFromHomeScreen,
+                                    ));
                             // openSheet(2);
                           }
                         },

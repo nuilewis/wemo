@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../../../constants.dart';
 
-
 class PhoneNumberCard extends StatelessWidget {
   const PhoneNumberCard({
     Key? key,
@@ -21,9 +20,10 @@ class PhoneNumberCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(right: kDefaultPadding),
       height: 120,
+      width: screenSize.width * .8,
       decoration: BoxDecoration(
-          boxShadow:  const [
-             BoxShadow(
+          boxShadow: const [
+            BoxShadow(
               color: kPurple20,
               offset: Offset(5, 10),
               blurRadius: 20,
@@ -35,12 +35,10 @@ class PhoneNumberCard extends StatelessWidget {
               colors: [kPurple, kPurple20],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight)),
-      width: screenSize.width * .8,
       padding: const EdgeInsets.all(kDefaultPadding),
       alignment: Alignment.topLeft,
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(

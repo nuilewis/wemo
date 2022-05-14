@@ -5,7 +5,14 @@ import '../../global_components/wemo_button.dart';
 
 class VerifyNumberScreen extends StatefulWidget {
   static const id = "verify number";
-  const VerifyNumberScreen({Key? key}) : super(key: key);
+
+  final VoidCallback navigateToNextPage;
+  final VoidCallback navigateToPreviousPage;
+  const VerifyNumberScreen(
+      {Key? key,
+      required this.navigateToNextPage,
+      required this.navigateToPreviousPage})
+      : super(key: key);
 
   @override
   State<VerifyNumberScreen> createState() => _VerifyNumberScreenState();
@@ -26,14 +33,8 @@ class _VerifyNumberScreenState extends State<VerifyNumberScreen> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
-    return Container(
-      height: screenSize.height * .7,
-      decoration: BoxDecoration(
-          color: Theme.of(context).scaffoldBackgroundColor,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(28),
-            topRight: Radius.circular(28),
-          )),
+    return SizedBox(
+      height: screenSize.height * .6,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
         child: Form(
@@ -41,16 +42,6 @@ class _VerifyNumberScreenState extends State<VerifyNumberScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                margin: const EdgeInsets.only(top: 7),
-                width: 50,
-                height: 5,
-                decoration: BoxDecoration(
-                  color: kPurple20,
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              const SizedBox(height: 25),
               Text(
                 "Input Verification Code",
                 style: Theme.of(context).textTheme.headline1,
@@ -82,7 +73,9 @@ class _VerifyNumberScreenState extends State<VerifyNumberScreen> {
                   ),
                 ),
               ),
-              const Spacer(),
+              const Spacer(
+                flex: 2,
+              ),
               WemoButton(
                   textColor: Colors.white,
                   title: "Verify",
@@ -95,10 +88,11 @@ class _VerifyNumberScreenState extends State<VerifyNumberScreen> {
 
                     if (_formKey.currentState!.validate()) {
                       ///If verifcation is valid then proceed to do the following logic
-                      Navigator.pop(context);
-                    }
 
-                    ///Todo: add method to verify phone number
+                      ///Todo: add method to verify phone number
+                      widget.navigateToNextPage();
+                      //Navigate to next page if verification is complete
+                    }
                   }),
               const SizedBox(
                 height: 40,

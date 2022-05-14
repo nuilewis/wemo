@@ -1,4 +1,4 @@
-
+import 'package:flutter/foundation.dart';
 
 class QrService {
   ///Interpolate name and number into a single string to feed to tthe GR generator
@@ -9,7 +9,7 @@ class QrService {
     String numToString = number.toString();
 
     String joinedString = numToString + name;
-    print("joined string is $joinedString");
+    debugPrint("joined string is $joinedString");
     return joinedString;
   }
 

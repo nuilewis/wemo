@@ -44,21 +44,21 @@ class _ScanScreenState extends State<ScanScreen> {
 
   void _onQRViewCreated(QRViewController qrViewController) {
     this.qrViewController = qrViewController;
-    qrViewController.scannedDataStream.listen((scanData, ) {
+    qrViewController.scannedDataStream.listen((
+      scanData,
+    ) {
       setState(() {
         result = scanData;
       });
 
       if (result?.code != null) {
         qrViewController.pauseCamera();
-        print("scan data result is ${result?.code}");
+        debugPrint("scan data result is ${result?.code}");
 
         HapticFeedback.heavyImpact();
         // ScaffoldMessenger.of(context)
         //     .showSnackBar(SnackBar(content: Text(result?.code ?? "null")));
 
-
-        
         ///Take the result and split into the name and number
         String? joinedResultString = result?.code;
 
@@ -87,7 +87,6 @@ class _ScanScreenState extends State<ScanScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Stack(
         children: [
@@ -124,7 +123,6 @@ class _ScanScreenState extends State<ScanScreen> {
               child: IconButton(
                 onPressed: () {
                   Navigator.pop(context);
-
                 },
                 icon: SvgPicture.asset(
                   "assets/svg/back_icon.svg",
