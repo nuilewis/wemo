@@ -3,12 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:wemo/providers/momo_num_provider.dart';
-import 'package:wemo/screens/initialsetupflowscreens/bottomsheets.dart';
 import '../../constants.dart';
 import '../../global_components/wemo_button.dart';
 import 'show_qr_screen.dart';
-import 'verification_success_screen.dart';
-import 'verify_num_screen.dart';
 
 class AddNumberScreen extends StatefulWidget {
   static const id = "add a number";
@@ -113,14 +110,23 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                         decoration: wemoTextFieldDecoration.copyWith(
                             hintText: "Momo Name"),
                       ),
+                      SizedBox(height: 5),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 4),
+                        child: Text(
+                          "Please enter the exact name your momo account is registered with",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(color: kPurple),
+                        ),
+                      ),
                       const SizedBox(
                         height: kDefaultPadding,
                       ),
                       TextFormField(
                         key: numberKey,
                         maxLength: 9,
-
-                        /// 13 to allow for adding "+237" to the number
                         maxLengthEnforcement: MaxLengthEnforcement.enforced,
                         controller: number,
                         validator: (value) {
@@ -136,13 +142,12 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                             .bodyText1!
                             .copyWith(fontSize: 18),
                         keyboardType: TextInputType.number,
-
                         decoration: wemoTextFieldDecoration.copyWith(
                             hintText: "Phone Number"),
                       ),
                       const Spacer(flex: 2),
                       WemoButton(
-                        title: "Send Verification SMS",
+                        title: "Get Wemo Code",
                         onPressed: () {
                           Feedback.forTap(context);
                           HapticFeedback.lightImpact();
@@ -160,7 +165,7 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                                 isDismissible: false,
                                 isScrollControlled: true,
                                 context: context,
-                                builder: (context) => WemoBottomSheets(
+                                builder: (context) => ShowQRCodeScreen(
                                       isCalledFromHomeScreen:
                                           widget.isCalledFromHomeScreen,
                                     ));
