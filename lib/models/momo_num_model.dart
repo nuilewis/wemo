@@ -1,7 +1,7 @@
 import '../enums/wemo_enums.dart';
 
 class MomoNumber {
-  final int number;
+  final String number;
   final String name;
   final NetworkType network;
 

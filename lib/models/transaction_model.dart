@@ -2,7 +2,7 @@ import 'package:wemo/enums/wemo_enums.dart';
 
 class Transaction {
   final String name;
-  final int number;
+  final String number;
   final NetworkType network;
   final DateTime time;
   final int amount;

@@ -6,12 +6,10 @@ class MomoNumberData extends ChangeNotifier {
   List<MomoNumber> momoNumberList = [];
 
   void addMomoNUmber({required String name, required String number}) {
-    int numToInt = double.tryParse(number)!.toInt();
-
     momoNumberList.add(MomoNumber(
         name: name,
-        number: numToInt,
-        network: TransactionService.determinNetwork(numToInt)));
+        number: number,
+        network: TransactionService.determinNetwork(number)));
 
     print("momoList is $momoNumberList");
     notifyListeners();
