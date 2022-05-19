@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -10,12 +11,14 @@ import '../../providers/send_money_provider.dart';
 class InputAmountAndPinDialog extends StatefulWidget {
   final String recieverName;
   final int recievernumber;
+  final bool? isSendingThroughNumber;
   final Function navigateToNextPage;
   const InputAmountAndPinDialog({
     Key? key,
     required this.recieverName,
     required this.recievernumber,
     required this.navigateToNextPage,
+    this.isSendingThroughNumber = false,
   }) : super(key: key);
 
   @override
@@ -26,11 +29,13 @@ class InputAmountAndPinDialog extends StatefulWidget {
 class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
   final TextEditingController amountController = TextEditingController();
   final TextEditingController pinController = TextEditingController();
+  final TextEditingController numberController = TextEditingController();
 
   final GlobalKey<FormState> _formKey =
       GlobalKey<FormState>(debugLabel: "send money form key");
   final Key amountKey = GlobalKey();
   final Key pinKey = GlobalKey();
+  final Key numberKey = GlobalKey();
 
   bool addCharges = false;
 
@@ -39,6 +44,7 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
     super.dispose();
     amountController.dispose();
     pinController.dispose();
+    numberController.dispose();
   }
 
   @override
@@ -55,6 +61,49 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                 const SizedBox(
                   height: kDefaultPadding,
                 ),
+
+                ///Add number field
+                ///If the user is sending through number, then show an extra
+                ///text form field to add the number
+                widget.isSendingThroughNumber!
+                    ? Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              "Number",
+                              style: Theme.of(context).textTheme.bodyText1,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          TextFormField(
+                            key: numberKey,
+                            maxLength: 9,
+                            textAlign: TextAlign.center,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyText1!
+                                .copyWith(fontSize: 20),
+                            keyboardType: TextInputType.number,
+                            controller: numberController,
+                            decoration: wemoTextFieldDecoration.copyWith(
+                                hintText: "Number"),
+                            validator: (value) {
+                              if (value == null ||
+                                  value.isEmpty ||
+                                  value == "0") {
+                                return "Please the number to send to";
+                              }
+
+                              return null;
+                            },
+                          ),
+                        ],
+                      )
+                    : SizedBox(),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -62,9 +111,7 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                     style: Theme.of(context).textTheme.bodyText1,
                   ),
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
+                const SizedBox(height: 5),
 
                 TextFormField(
                   key: amountKey,
@@ -86,39 +133,46 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                   },
                 ),
                 const SizedBox(height: kDefaultPadding),
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "PIN Code",
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                ),
+                widget.isSendingThroughNumber!
+                    ? SizedBox()
+                    : Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "PIN Code",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ),
                 const SizedBox(
                   height: 5,
                 ),
 
                 ///Pin Field
-                TextFormField(
-                  obscureText: true,
-                  textAlign: TextAlign.center,
-                  key: pinKey,
-                  maxLength: 5,
-                  keyboardType: TextInputType.number,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1!
-                      .copyWith(fontSize: 20),
-                  controller: pinController,
-                  decoration: wemoTextFieldDecoration.copyWith(hintText: "PIN"),
-                  validator: (value) {
-                    if (value!.length < 4 || value == null || value.isEmpty) {
-                      return "Please enter a valid PIN";
-                    }
-                    return null;
-                  },
-                ),
+                widget.isSendingThroughNumber!
+                    ? SizedBox()
+                    : TextFormField(
+                        obscureText: true,
+                        textAlign: TextAlign.center,
+                        key: pinKey,
+                        maxLength: 5,
+                        keyboardType: TextInputType.number,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyText1!
+                            .copyWith(fontSize: 20),
+                        controller: pinController,
+                        decoration:
+                            wemoTextFieldDecoration.copyWith(hintText: "PIN"),
+                        validator: (value) {
+                          if (value!.length < 4 ||
+                              value == null ||
+                              value.isEmpty) {
+                            return "Please enter a valid PIN";
+                          }
+                          return null;
+                        },
+                      ),
                 const SizedBox(
-                  height: kDefaultPadding,
+                  height: kDefaultPadding - 8,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -134,6 +188,8 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                       trackColor: kDark20,
                       thumbColor: Colors.white,
                       onChanged: (bool value) {
+                        HapticFeedback.lightImpact();
+                        Feedback.forTap(context);
                         setState(() {
                           addCharges = value;
                         });
@@ -142,10 +198,10 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                   ],
                 ),
                 const SizedBox(
-                  height: kDefaultPadding2x,
+                  height: kDefaultPadding,
                 ),
                 WemoButton(
-                  isSmall: false,
+                  isSmall: true,
                   textColor: Colors.white,
                   title: "Send",
                   showIcon: true,
@@ -166,14 +222,22 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                       ///adding all details of the person we are sending money to to the provider
                       sendMoneyData.sendMoneyToPerson(
                         amount: addCharges
-                            ? TransactionService.calculateCahrges(amount!)
+                            ? TransactionService.calculateCharges(amount!)
                             : amount!,
                         pin: pinController.text,
-                        name: widget.recieverName,
-                        number: widget.recievernumber.toString(),
+                        name: widget.isSendingThroughNumber!
+                            ? ""
+                            : widget.recieverName,
+
+                        number: widget.isSendingThroughNumber!
+                            ? numberController.text
+                            : widget.recievernumber.toString(),
+
+                        ///If the user is not sending through qr, then take the inputted number and use. and
+                        ///also set the name to null bcs we cannot get the name.
                       );
 
-                      ///Now Navigate to the next confrimation dialog
+                      ///Now Navigate to the next confirmation dialog
                       widget.navigateToNextPage();
                     }
                   },
