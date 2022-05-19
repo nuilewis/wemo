@@ -51,16 +51,34 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
 
       index ??=
           momoNumData.momoNumberList.indexOf(momoNumData.momoNumberList.last);
-      return SizedBox(
+      return Container(
         height: screenSize.height * .75,
+        decoration: BoxDecoration(
+          color: Theme.of(context).scaffoldBackgroundColor,
+          borderRadius: const BorderRadius.only(
+            topRight: Radius.circular(kDefaultPadding2x),
+            topLeft: Radius.circular(kDefaultPadding2x),
+          ),
+        ),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: kDefaultPadding),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              Container(
+                margin: const EdgeInsets.only(top: 7),
+                width: 50,
+                height: 5,
+                decoration: BoxDecoration(
+                  color: kPurple20,
+                  borderRadius: BorderRadius.circular(5),
+                ),
+              ),
+              const SizedBox(height: 25),
               Text(
-                "Here's your QR Code",
+                "Here's your Wemo Code",
                 style: Theme.of(context).textTheme.headline1,
+                textAlign: TextAlign.center,
               ),
               const Spacer(),
               ShowQRCode(
@@ -85,7 +103,7 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
               ),
               WemoButton(
                   textColor: Colors.white,
-                  title: "Print to PDF",
+                  title: "Save",
                   onPressed: () {
                     HapticFeedback.lightImpact();
                     Feedback.forTap(context);

@@ -89,7 +89,7 @@ class _VerifyNumberScreenState extends State<VerifyNumberScreen> {
                     if (_formKey.currentState!.validate()) {
                       ///If verifcation is valid then proceed to do the following logic
 
-                      ///Todo: add method to verify phone number
+                      ///Todo: add method to verify phone number eventually
                       widget.navigateToNextPage();
                       //Navigate to next page if verification is complete
                     }
