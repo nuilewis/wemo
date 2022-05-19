@@ -19,7 +19,6 @@ class WemoUSSDService {
           code: orangeCode, subscriptionId: subscriptionId);
 
       debugPrint("response from AdvancedUssd is $response");
-      // print("success : $result");
     } catch (e) {
       debugPrint("error from sa: $e");
     }

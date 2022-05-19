@@ -7,7 +7,7 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:wemo/constants.dart';
 import 'package:wemo/screens/sendscreen/send_dialog_screen.dart';
 
-import '../splashscreen/components/round_button.dart';
+import '../onboardingscreen/components/round_button.dart';
 
 class ScanScreen extends StatefulWidget {
   static const id = "scan screen";
