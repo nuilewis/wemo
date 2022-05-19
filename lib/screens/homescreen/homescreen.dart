@@ -81,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             setState(() {
                               currentIndex = index;
                             });
-                            print("current index is $currentIndex");
+                            debugPrint("current index is $currentIndex");
                           },
                           itemBuilder: (context, index) {
                             List<MomoNumber> momoNumbersList =

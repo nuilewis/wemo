@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -103,7 +102,7 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                           ),
                         ],
                       )
-                    : SizedBox(),
+                    : const SizedBox(),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Text(
@@ -134,7 +133,7 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                 ),
                 const SizedBox(height: kDefaultPadding),
                 widget.isSendingThroughNumber!
-                    ? SizedBox()
+                    ? const SizedBox()
                     : Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -148,7 +147,7 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
 
                 ///Pin Field
                 widget.isSendingThroughNumber!
-                    ? SizedBox()
+                    ? const SizedBox()
                     : TextFormField(
                         obscureText: true,
                         textAlign: TextAlign.center,

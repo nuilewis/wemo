@@ -110,7 +110,7 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                         decoration: wemoTextFieldDecoration.copyWith(
                             hintText: "Momo Name"),
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Padding(
                         padding: const EdgeInsets.only(left: 4),
                         child: Text(
@@ -156,7 +156,7 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                           if (_formKey.currentState!.validate()) {
                             //If all the form are validated, then proceed with the rest of the logic
 
-                            momoNumData.addMomoNUmber(
+                            momoNumData.addMomoNumber(
                                 name: name.text.toUpperCase(),
                                 number: number.text);
 
