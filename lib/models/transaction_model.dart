@@ -17,4 +17,29 @@ class Transaction {
       required this.amount,
       required this.charges,
       required this.transactionType});
+
+  ///Assigning variable values to their corresponding map fields
+
+  Transaction.fromMap(Map map)
+      : name = map["name"],
+        number = map["number"],
+        network = map["network"],
+        amount = map["amount"],
+        charges = map["charges"],
+        time = map["time"],
+        transactionType = map["transactionType"];
+
+  ///Converting from Transaction object to a map
+
+  Map toMap() {
+    return {
+      "name": name,
+      "number": number,
+      "network": network,
+      "amount": amount,
+      "charges": charges,
+      "transactionType": transactionType,
+      "time": time
+    };
+  }
 }
