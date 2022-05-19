@@ -35,7 +35,7 @@ class WemoButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(kDefaultPadding),
         alignment: Alignment.center,
-        height: isSmall ? 56 : 64,
+        height: isSmall ? 54 : 64,
         width: double.infinity,
         decoration: BoxDecoration(
           border: isSecondary

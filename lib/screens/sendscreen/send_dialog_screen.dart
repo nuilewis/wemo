@@ -26,6 +26,7 @@ class _SendDialogScreenState extends State<SendDialogScreen> {
 
     dialogPages = [
       InputAmountAndPinDialog(
+       
         recieverName: widget.recieverName,
         recievernumber: widget.recieverNumber,
         navigateToNextPage: navigateToNextDialog,

@@ -73,7 +73,9 @@ class _ScanScreenState extends State<ScanScreen> {
             context: context,
             builder: (context) {
               return SendDialogScreen(
-                  recieverName: recieverName, recieverNumber: recieverNumber);
+                recieverName: recieverName,
+                recieverNumber: recieverNumber,
+              );
             });
       }
     });

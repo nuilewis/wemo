@@ -1,5 +1,3 @@
-import 'package:expandable_page_view/expandable_page_view.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -91,8 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                             return Center(
                               child: PhoneNumberCard(
-                                  number:
-                                      momoNumbersList[index].number.toString(),
+                                  number: momoNumbersList[index].number,
                                   name: momoNumbersList[index].name,
                                   network: momoNumbersList[index]
                                       .network
@@ -232,20 +229,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   isDismissible: true,
                                   context: context,
                                   builder: (context) {
-                                    return Container(
-                                      decoration: BoxDecoration(
-                                        color: Theme.of(context)
-                                            .scaffoldBackgroundColor,
-                                        borderRadius: const BorderRadius.only(
-                                          topRight: Radius.circular(
-                                              kDefaultPadding2x),
-                                          topLeft: Radius.circular(
-                                              kDefaultPadding2x),
-                                        ),
-                                      ),
-                                      child: ShowQRCodeScreen(
-                                        index: currentIndex,
-                                      ),
+                                    return ShowQRCodeScreen(
+                                      index: currentIndex,
                                     );
                                   });
                             },

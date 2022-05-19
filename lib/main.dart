@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         title: 'Wemo',
         debugShowCheckedModeBanner: false,
         theme: wemoLightTheme(context),
-        darkTheme: wemoDarkTheme(context),
+        //darkTheme: wemoDarkTheme(context),
         home: const SplashScreen(),
         routes: {
           HomeScreen.id: (context) => const HomeScreen(),
