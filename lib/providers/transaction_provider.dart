@@ -5,6 +5,8 @@ import '../models/transaction_model.dart';
 class TransactionData extends ChangeNotifier {
   List<Transaction> transactionsList = [];
 
+  String? transactionResult;
+
   void addTransaction(Transaction transaction) {
     transactionsList.add(transaction);
     notifyListeners();
@@ -12,6 +14,12 @@ class TransactionData extends ChangeNotifier {
 
   void removeTransaction(index) {
     transactionsList.removeAt(index);
+    notifyListeners();
+  }
+
+  void setTransactionResult(String? result) {
+    transactionResult = result;
+
     notifyListeners();
   }
 }
