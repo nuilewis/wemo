@@ -5,9 +5,9 @@ import 'package:wemo/constants.dart';
 import 'package:wemo/screens/initialsetupflowscreens/addnumberscreen.dart';
 import 'components/round_button.dart';
 
-class SplashScreen extends StatelessWidget {
+class OnboardingScreen extends StatelessWidget {
   static const id = "splash screen";
-  const SplashScreen({Key? key}) : super(key: key);
+  const OnboardingScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

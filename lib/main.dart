@@ -5,8 +5,9 @@ import 'package:wemo/providers/send_money_provider.dart';
 import 'package:wemo/providers/transaction_provider.dart';
 import 'package:wemo/screens/homescreen/homescreen.dart';
 import 'package:wemo/screens/initialsetupflowscreens/addnumberscreen.dart';
+import 'package:wemo/screens/rootScreen/root_screen.dart';
 import 'package:wemo/screens/scanscreen/scan_screen.dart';
-import 'package:wemo/screens/splashscreen/splashscreen.dart';
+import 'package:wemo/screens/onboardingscreen//onboarding_screen.dart';
 import 'package:wemo/theme.dart';
 
 void main() {
@@ -33,10 +34,10 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: wemoLightTheme(context),
         //darkTheme: wemoDarkTheme(context),
-        home: const SplashScreen(),
+        home: const RootScreen(),
         routes: {
           HomeScreen.id: (context) => const HomeScreen(),
-          SplashScreen.id: (context) => const SplashScreen(),
+          OnboardingScreen.id: (context) => const OnboardingScreen(),
           AddNumberScreen.id: (context) => AddNumberScreen(
                 formkey: GlobalKey<FormState>(),
                 nameKey: GlobalKey(),
