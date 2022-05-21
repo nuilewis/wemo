@@ -11,11 +11,11 @@ class WemoButton extends StatelessWidget {
   final Color? textColor;
   final Color? bgColor;
   final bool isSmall;
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   const WemoButton({
     Key? key,
     required this.title,
-    required this.onPressed,
+    this.onPressed,
     this.iconLink,
     this.showIcon = false,
     this.isSecondary = false,

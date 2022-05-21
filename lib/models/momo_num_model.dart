@@ -1,11 +1,14 @@
-import '../enums/wemo_enums.dart';
-
 class MomoNumber {
   final String number;
   final String name;
-  final NetworkType network;
+//  final NetworkType network;
+  final String network;
 
-  MomoNumber({required this.number, required this.name, required this.network});
+  MomoNumber({
+    required this.number,
+    required this.name,
+    required this.network,
+  });
 
   ///Assigning variables values to the map in their corresponding map keys
   MomoNumber.fromMap(Map map)

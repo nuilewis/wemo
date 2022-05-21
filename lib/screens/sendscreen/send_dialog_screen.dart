@@ -5,10 +5,14 @@ import 'input_amount_and_pin_dialog.dart';
 import 'package:expandable_page_view/expandable_page_view.dart';
 
 class SendDialogScreen extends StatefulWidget {
-  final String recieverName;
-  final int recieverNumber;
+  final String? receiverName;
+  final String? receiverNumber;
+  final bool isSendingthroughNumber;
   const SendDialogScreen(
-      {Key? key, required this.recieverName, required this.recieverNumber})
+      {Key? key,
+      this.receiverName,
+      this.receiverNumber,
+      required this.isSendingthroughNumber})
       : super(key: key);
 
   @override
@@ -26,9 +30,9 @@ class _SendDialogScreenState extends State<SendDialogScreen> {
 
     dialogPages = [
       InputAmountAndPinDialog(
-       
-        recieverName: widget.recieverName,
-        recievernumber: widget.recieverNumber,
+        isSendingThroughNumber: widget.isSendingthroughNumber,
+        recieverName: widget.receiverName,
+        receiverNumber: widget.receiverNumber,
         navigateToNextPage: navigateToNextDialog,
       ),
       const ConfirmAndSendDialog(),
@@ -58,7 +62,7 @@ class _SendDialogScreenState extends State<SendDialogScreen> {
       child: AnimatedContainer(
         //   padding: const EdgeInsets.all(kDefaultPadding),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(kDefaultPadding * 3),
+            borderRadius: BorderRadius.circular(kDefaultPadding * 2.5),
             color: Theme.of(context).scaffoldBackgroundColor),
         width: screenSize.width * .8,
         //height: screenSize.height * .6,

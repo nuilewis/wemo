@@ -8,16 +8,16 @@ import '../../constants.dart';
 import '../../providers/send_money_provider.dart';
 
 class InputAmountAndPinDialog extends StatefulWidget {
-  final String recieverName;
-  final int recievernumber;
+  final String? recieverName;
+  final String? receiverNumber;
   final bool? isSendingThroughNumber;
   final Function navigateToNextPage;
   const InputAmountAndPinDialog({
     Key? key,
-    required this.recieverName,
-    required this.recievernumber,
+    this.recieverName,
+    this.receiverNumber,
     required this.navigateToNextPage,
-    this.isSendingThroughNumber = false,
+    required this.isSendingThroughNumber,
   }) : super(key: key);
 
   @override
@@ -226,11 +226,11 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                         pin: pinController.text,
                         name: widget.isSendingThroughNumber!
                             ? ""
-                            : widget.recieverName,
+                            : widget.recieverName!,
 
                         number: widget.isSendingThroughNumber!
                             ? numberController.text
-                            : widget.recievernumber.toString(),
+                            : widget.receiverNumber.toString(),
 
                         ///If the user is not sending through qr, then take the inputted number and use. and
                         ///also set the name to null bcs we cannot get the name.

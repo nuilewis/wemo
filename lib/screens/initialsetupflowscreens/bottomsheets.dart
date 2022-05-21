@@ -57,7 +57,6 @@ class _WemoBottomSheetsState extends State<WemoBottomSheets> {
 
   @override
   Widget build(BuildContext context) {
-    final Size screenSize = MediaQuery.of(context).size;
     return AnimatedContainer(
       //  height: screenSize.height * .7,
       duration: const Duration(milliseconds: 300),

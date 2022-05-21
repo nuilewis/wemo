@@ -110,7 +110,8 @@ class ConfirmAndSendDialog extends StatelessWidget {
                                 sendMoneyData.moneyToSend!.amount,
                             name: sendMoneyData.moneyToSend!.name,
                             network: TransactionService.determinNetwork(
-                                sendMoneyData.moneyToSend!.number),
+                                    sendMoneyData.moneyToSend!.number)
+                                .toString(),
                             transactionType: TransactionType.sent,
                             number: sendMoneyData.moneyToSend!.number,
                             time: DateTime.now(),

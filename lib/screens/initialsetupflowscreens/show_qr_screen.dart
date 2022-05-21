@@ -16,12 +16,14 @@ class ShowQRCodeScreen extends StatefulWidget {
   final VoidCallback? navigateToNextPage;
   final VoidCallback? navigateToPreviousPage;
   final bool? isCalledFromHomeScreen;
+  final bool? onRecievedTapped;
 
   const ShowQRCodeScreen({
     Key? key,
     this.index,
     this.navigateToNextPage,
     this.navigateToPreviousPage,
+    this.onRecievedTapped = false,
     this.isCalledFromHomeScreen = false,
   }) : super(key: key);
 
@@ -52,7 +54,9 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
       index ??=
           momoNumData.momoNumberList.indexOf(momoNumData.momoNumberList.last);
       return Container(
-        height: screenSize.height * .75,
+        height: widget.onRecievedTapped!
+            ? screenSize.height * .65
+            : screenSize.height * .75,
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
           borderRadius: const BorderRadius.only(
@@ -101,34 +105,36 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
               const Spacer(
                 flex: 2,
               ),
-              WemoButton(
-                  textColor: Colors.white,
-                  title: "Save",
-                  onPressed: () {
-                    HapticFeedback.lightImpact();
-                    Feedback.forTap(context);
+              widget.onRecievedTapped!
+                  ? const SizedBox()
+                  : WemoButton(
+                      textColor: Colors.white,
+                      title: "Save",
+                      onPressed: () {
+                        HapticFeedback.lightImpact();
+                        Feedback.forTap(context);
 
-                    ///Todo: add methods to print to PDF.
-                    ///
-                    if (widget.isCalledFromHomeScreen == true) {
-                      debugPrint(
-                          "qr screen is popping until to return to homescreen");
-                      Navigator.popUntil(
-                          context, ModalRoute.withName(HomeScreen.id));
+                        ///Todo: add methods to print to PDF.
+                        ///
+                        if (widget.isCalledFromHomeScreen == true) {
+                          debugPrint(
+                              "qr screen is popping until to return to homescreen");
+                          Navigator.popUntil(
+                              context, ModalRoute.withName(HomeScreen.id));
 
-                      /// of the bottom sheet was called from the homescreen ie the user added a number,
-                      /// then instead of pushing a new homescreen over the old homescreen, rather pop the current
-                      /// bottomsheet plus the underlying add number page.
-                    } else {
-                      debugPrint("qr screen is pushing homescreen");
-                      Navigator.popAndPushNamed(context, HomeScreen.id);
+                          /// of the bottom sheet was called from the homescreen ie the user added a number,
+                          /// then instead of pushing a new homescreen over the old homescreen, rather pop the current
+                          /// bottomsheet plus the underlying add number page.
+                        } else {
+                          debugPrint("qr screen is pushing homescreen");
+                          Navigator.popAndPushNamed(context, HomeScreen.id);
 
-                      ///In this case, the bottom sheet was called from the initial setup/splash screen
-                      ///therefore no homesceen has been called to the navigator stack, and popping both pages as done
-                      ///above will result to a black screen being displayed, to prevent this, this section
-                      ///will rather push to the homescreen.
-                    }
-                  }),
+                          ///In this case, the bottom sheet was called from the initial setup/splash screen
+                          ///therefore no homesceen has been called to the navigator stack, and popping both pages as done
+                          ///above will result to a black screen being displayed, to prevent this, this section
+                          ///will rather push to the homescreen.
+                        }
+                      }),
               const SizedBox(
                 height: 40,
               )

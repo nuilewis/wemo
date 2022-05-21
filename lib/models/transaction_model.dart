@@ -3,10 +3,12 @@ import 'package:wemo/enums/wemo_enums.dart';
 class Transaction {
   final String name;
   final String number;
-  final NetworkType network;
+  // final NetworkType network;
+  final String network;
   final DateTime time;
   final int amount;
   final int charges;
+  //final String transactionType;
   final TransactionType transactionType;
 
   Transaction(

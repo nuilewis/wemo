@@ -8,7 +8,6 @@ class WemoUSSDService {
       {required int number, required int pin, required int amount}) async {
     int subscriptionId =
         -1; //sim 1 or 2 and -1 is for the default phone settings
-    String ussdCode = "#123#";
     String mtnMomoCode = "*126*1*1*$number*$amount*Transferred with Wemo*$pin#";
     String orangeCode = "#150#";
 
