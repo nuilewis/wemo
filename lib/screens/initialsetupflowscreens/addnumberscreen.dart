@@ -13,11 +13,13 @@ class AddNumberScreen extends StatefulWidget {
   final Key nameKey;
   final Key numberKey;
   final bool isCalledFromHomeScreen;
+  final bool showBackButton;
   const AddNumberScreen(
       {Key? key,
       required this.formkey,
       required this.nameKey,
       required this.numberKey,
+      this.showBackButton = false,
       required this.isCalledFromHomeScreen})
       : super(key: key);
 
@@ -81,7 +83,21 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     //mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Spacer(),
+                      widget.showBackButton
+                          ? Padding(
+                              padding: const EdgeInsets.only(
+                                  top: kDefaultPadding2x * 2),
+                              child: IconButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  icon: SvgPicture.asset(
+                                    "assets/svg/back_icon.svg",
+                                    color: Theme.of(context).iconTheme.color,
+                                  )),
+                            )
+                          : Spacer(),
+                      SizedBox(height: kDefaultPadding),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
