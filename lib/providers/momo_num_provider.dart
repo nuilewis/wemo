@@ -9,28 +9,25 @@ class MomoNumberData extends ChangeNotifier {
   ///Get saved numbers and assign to momo Numbers
 
   void getSavedMomoNUmber() async {
-    SharedPrefsService().initSharedPrefs();
-
-    List<MomoNumber> savedMomoNumber = SharedPrefsService().savedNumbersList;
+    List<MomoNumber> savedMomoNumber = savedNumbersList;
 
     if (savedMomoNumber.isNotEmpty) {
-      momoNumberList = SharedPrefsService().savedNumbersList;
+      momoNumberList = savedNumbersList;
     }
-    notifyListeners();
   }
 
   void addMomoNumber({required String name, required String number}) {
     MomoNumber momoNumberToAddAndSave = MomoNumber(
         name: name,
         number: number,
-        network: TransactionService.determinNetwork(number));
-    momoNumberList.add(momoNumberToAddAndSave);
+        network: TransactionService.determinNetwork(number).toString());
+    // momoNumberList.add(momoNumberToAddAndSave);
 
     //also add to saved momo numbers
-    SharedPrefsService()
-        .addToMomoSavedList(numberToSave: momoNumberToAddAndSave);
+    addToMomoSavedList(numberToSave: momoNumberToAddAndSave);
+    getSavedMomoNUmber();
 
-    debugPrint("momoList is $momoNumberList");
+    debugPrint("momoList is ${momoNumberList[0]}");
     notifyListeners();
   }
 
@@ -38,7 +35,7 @@ class MomoNumberData extends ChangeNotifier {
     momoNumberList.removeAt(index);
 
     //also delete momoNumber from saved List
-    SharedPrefsService().removeMomoNumFromSavedList(index);
+    removeMomoNumFromSavedList(index);
     notifyListeners();
   }
 }

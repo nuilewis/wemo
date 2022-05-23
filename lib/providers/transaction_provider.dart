@@ -9,28 +9,27 @@ class TransactionData extends ChangeNotifier {
   String? transactionResult;
 
   void getSavedTransactions() {
-    SharedPrefsService().initSharedPrefs();
+    initSharedPrefs();
 
-    List<Transaction> savedTransactionList =
-        SharedPrefsService().savedTransactionsList;
+    List<Transaction> savedTransactionList = savedTransactionsList;
     if (savedTransactionList.isNotEmpty) {
-      transactionsList = SharedPrefsService().savedTransactionsList;
+      transactionsList = savedTransactionsList;
     }
     notifyListeners();
   }
 
   void addTransaction(Transaction transaction) {
-    transactionsList.add(transaction);
+    //transactionsList.add(transaction);
     //also add save to shared prefs
-    SharedPrefsService()
-        .addToTransactionSavedList(transactionToSave: transaction);
+
+    addToTransactionSavedList(transactionToSave: transaction);
     notifyListeners();
   }
 
   void removeTransaction(index) {
     transactionsList.removeAt(index);
     //Also remove from transaction List
-    SharedPrefsService().removeTransactionFromSavedList(index);
+    removeTransactionFromSavedList(index);
     notifyListeners();
   }
 
