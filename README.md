@@ -1,6 +1,6 @@
 # wemo
 
-SImplify your momo transactions
+Simplify your momo transactions
 
 ## Getting Started
 
