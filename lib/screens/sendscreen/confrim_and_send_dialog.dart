@@ -132,8 +132,8 @@ class ConfirmAndSendDialog extends StatelessWidget {
                     onPressed: () {
                       HapticFeedback.lightImpact();
                       Feedback.forTap(context);
-
-                      ///Todo: pop the dialog
+Navigator.pop(context);
+                      
                     },
                   ),
                 ],

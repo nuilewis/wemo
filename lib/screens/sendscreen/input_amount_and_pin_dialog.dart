@@ -252,6 +252,7 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                   onPressed: () {
                     HapticFeedback.lightImpact();
                     Feedback.forTap(context);
+                    Navigator.pop(context);
 
                     ///Todo: pop the dialog
                   },
