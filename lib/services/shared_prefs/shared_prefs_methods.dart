@@ -5,93 +5,91 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wemo/models/momo_num_model.dart';
 import 'package:wemo/models/transaction_model.dart';
 
-class SharedPrefsService {
-  ///initialise Shared prefs
-  ///
-  List<MomoNumber> savedNumbersList = <MomoNumber>[];
-  List<Transaction> savedTransactionsList = <Transaction>[];
+///initialise Shared prefs
+///
+List<MomoNumber> savedNumbersList = <MomoNumber>[];
+List<Transaction> savedTransactionsList = <Transaction>[];
+late SharedPreferences wemoSharedPrefs;
 
-  late final SharedPreferences wemoSharedPrefs;
+Future<void> initSharedPrefs() async {
+  wemoSharedPrefs = await SharedPreferences.getInstance();
+  debugPrint("initialising wemo shared prefs");
+  loadMomoSPData();
+  loadTransactionSPData();
+}
 
-  void initSharedPrefs() async {
-    wemoSharedPrefs = await SharedPreferences.getInstance();
-    _loadMomoSPData();
-    _loadTransactionSPData();
-  }
+///Load SP Data
 
-  ///Load SP Data
+void loadMomoSPData() async {
+  List<String>? momoSPList = wemoSharedPrefs.getStringList("momoNumList");
 
-  void _loadMomoSPData() async {
-    List<String>? momoSPList = wemoSharedPrefs.getStringList("momoNumList");
+  savedNumbersList = momoSPList!
+      .map((savedNumbers) => MomoNumber.fromMap(json.decode(savedNumbers)))
+      .toList();
+}
 
-    savedNumbersList = momoSPList!
-        .map((savedNumbers) => MomoNumber.fromMap(json.decode(savedNumbers)))
-        .toList();
-  }
+void loadTransactionSPData() async {
+  List<String>? transactionSPList =
+      wemoSharedPrefs.getStringList("transactionList");
+  savedTransactionsList = transactionSPList!
+      .map((savedTransaction) =>
+          Transaction.fromMap(json.decode(savedTransaction)))
+      .toList();
+}
 
-  void _loadTransactionSPData() async {
-    List<String>? transactionSPList =
-        wemoSharedPrefs.getStringList("transactionList");
-    savedTransactionsList = transactionSPList!
-        .map((savedTransaction) =>
-            Transaction.fromMap(json.decode(savedTransaction)))
-        .toList();
-  }
+///Save SP Data
 
-  ///Save SP Data
+void saveMomoSPData() async {
+  List<String> momoSPList = savedNumbersList
+      .map((savedNumbers) => json.encode(savedNumbers.toMap()))
+      .toList();
+  //Save the list
+  wemoSharedPrefs.setStringList("momoNumList", momoSPList);
+  debugPrint("saved list of saved momo numbers are $momoSPList");
+}
 
-  void _saveMomoSPData() async {
-    List<String> momoSPList = savedNumbersList
-        .map((savedNumbers) => json.encode(savedNumbers.toMap()))
-        .toList();
-    //Save the list
-    wemoSharedPrefs.setStringList("momoNumList", momoSPList);
-    debugPrint("saved list of saved momo numbers are $momoSPList");
-  }
+void saveTransactionSPData() async {
+  List<String> transactionSPList = savedTransactionsList
+      .map((savedTransactions) => json.encode(savedTransactions.toMap()))
+      .toList();
+  //Saving the List
+  wemoSharedPrefs.setStringList("transactionList", transactionSPList);
+  debugPrint("saved list of saved transactions are $transactionSPList");
+}
 
-  void _saveTransactionSPData() async {
-    List<String> transactionSPList = savedTransactionsList
-        .map((savedTransactions) => json.encode(savedTransactions.toMap()))
-        .toList();
-    //Saving the List
-    wemoSharedPrefs.setStringList("transactionList", transactionSPList);
-    debugPrint("saved list of saved transactions are $transactionSPList");
-  }
+///Add new Data to the List to Save
 
-  ///Add new Data to the List to Save
+void addToMomoSavedList({required MomoNumber numberToSave}) {
+  //Add to the list of saved numbers
+  savedNumbersList.add(numberToSave);
 
-  void addToMomoSavedList({required MomoNumber numberToSave}) {
-    //Add to the list of saved numbers
-    savedNumbersList.add(numberToSave);
+  //Now save the list
+  saveMomoSPData();
+}
 
-    //Now save the list
-    _saveMomoSPData();
-  }
+void addToTransactionSavedList({required Transaction transactionToSave}) {
+  //Add to the list of saved transactions
+  savedTransactionsList.add(transactionToSave);
+  //Save the transaction list
 
-  void addToTransactionSavedList({required Transaction transactionToSave}) {
-    //Add to the list of saved transactions
-    savedTransactionsList.add(transactionToSave);
-    //Save the transaction list
+  saveTransactionSPData();
+}
 
-    _saveTransactionSPData();
-  }
+///Remove Data from the savedList
 
-  ///Remove Data from the savedList
+void removeMomoNumFromSavedList(int index) {
+  // savedNumbersList
+  //     .removeWhere((numberToRemove) => numberToRemove.number == number);
 
-  void removeMomoNumFromSavedList(int index) {
-    // savedNumbersList
-    //     .removeWhere((numberToRemove) => numberToRemove.number == number);
+  savedNumbersList.removeAt(index);
 
-    savedNumbersList.removeAt(index);
+  saveMomoSPData();
+}
 
-    _saveMomoSPData();
-  }
+void removeTransactionFromSavedList(int index) {
+  ///Remove transactions at a particular index instead of comparing names or numbers or amount
+  ///because you can send the same amount to the same person multiple times, so I'll just remove by index
 
-  void removeTransactionFromSavedList(int index) {
-    ///Remove transactions at a particular index instead of comparing names or numbers or amount
-    ///because you can send the same amount to the same person multiple times, so I'll just remove by index
-
-    savedTransactionsList.removeAt(index);
-    _saveTransactionSPData();
-  }
+  savedTransactionsList.removeAt(index);
+  saveTransactionSPData();
 }
