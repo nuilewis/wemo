@@ -14,6 +14,9 @@ const Color kPurple60 = Color(0x80531CF7);
 const Color kPurple40 = Color(0x4D531CF7);
 const Color kPurple20 = Color(0x1A531CF7);
 
+const Color kBlue = Color(0xFF91DCFF);
+const Color kBlue80 = Color(0xFF4DBEFF);
+
 const Color kGreen = Color(0xFF52DBB9);
 const Color kFuchsia = Color(0xFFFC4684);
 const Color kFuchsia80 = Color(0xFFFF7DA9);

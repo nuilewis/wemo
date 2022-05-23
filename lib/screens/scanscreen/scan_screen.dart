@@ -19,6 +19,8 @@ class ScanScreen extends StatefulWidget {
 
 class _ScanScreenState extends State<ScanScreen> {
   final GlobalKey qrKey = GlobalKey(debugLabel: "QR");
+  String flashIconLInk = "assets/svg/flash_on_icon.svg";
+  bool flashOn = false;
 
   QRViewController? qrViewController;
   Barcode? result;
@@ -62,10 +64,10 @@ class _ScanScreenState extends State<ScanScreen> {
         ///Take the result and split into the name and number
         String? joinedResultString = result?.code;
 
-        int recieverNumber = int.parse(joinedResultString!.substring(0, 9));
+        String receiverNumber = joinedResultString!.substring(0, 9);
         //number will never be null because of the if check
 
-        String recieverName = joinedResultString.substring(9);
+        String receiverName = joinedResultString.substring(9);
 
         ///Showing the Popup when it scans the QR
 
@@ -73,8 +75,9 @@ class _ScanScreenState extends State<ScanScreen> {
             context: context,
             builder: (context) {
               return SendDialogScreen(
-                recieverName: recieverName,
-                recieverNumber: recieverNumber,
+                receiverName: receiverName,
+                receiverNumber: receiverNumber,
+                isSendingthroughNumber: false,
               );
             });
       }
@@ -107,12 +110,18 @@ class _ScanScreenState extends State<ScanScreen> {
             child: Align(
               alignment: Alignment.bottomCenter,
               child: RoundedButton(
-                iconLink: "assets/svg/back_icon.svg",
+                iconLink: flashOn
+                    ? "assets/svg/flash_on_icon.svg"
+                    : "assets/svg/flash_off_icon.svg",
                 onPressed: () {
                   HapticFeedback.lightImpact();
                   Feedback.forTap(context);
                   qrViewController?.toggleFlash();
+
                   qrViewController?.resumeCamera();
+                  setState(() {
+                    flashOn = !flashOn;
+                  });
                 },
               ),
             ),

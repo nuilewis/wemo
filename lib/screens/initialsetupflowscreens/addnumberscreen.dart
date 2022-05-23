@@ -147,7 +147,7 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                         controller: number,
                         validator: (value) {
                           if (value == null || value.length < 9) {
-                            ///if number is not avalid phone number, then make the form field red
+                            ///if number is not a valid phone number, then make the form field red
 
                             return "Please enter a valid phone number.";
                           }
