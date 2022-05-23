@@ -32,7 +32,7 @@ class PhoneNumberCard extends StatelessWidget {
           ],
           borderRadius: BorderRadius.circular(kDefaultPadding2x),
           gradient: const LinearGradient(
-              colors: [kPurple, kPurple20],
+              colors: [kPurple, kBlue],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight)),
       padding: const EdgeInsets.all(kDefaultPadding),
