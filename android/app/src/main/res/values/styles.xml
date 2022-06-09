@@ -15,4 +15,12 @@
     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">?android:colorBackground</item>
     </style>
+<!--    Custom Wemo them with Android 12 splash screen-->
+    <style name = "WemoLightTheme" parent="Theme.SplashScreen">
+
+        <item name="windowSplashScreenBackground"> @color/splash_background_light</item>
+        <item name="windowSplashScreenAnimatedIcon" > @drawable/ic_wemo_splash</item>
+
+        <item name="postSplashScreenTheme"> @style/NormalTheme</item>
+    </style>
 </resources>
