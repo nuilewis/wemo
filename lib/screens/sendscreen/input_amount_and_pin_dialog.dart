@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:wemo/global_components/wemo_button.dart';
+import 'package:wemo/services/contact_picker_service.dart';
 import 'package:wemo/services/transaction_service.dart';
 import '../../constants.dart';
 import '../../providers/send_money_provider.dart';
@@ -27,23 +29,30 @@ class InputAmountAndPinDialog extends StatefulWidget {
 
 class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
   final TextEditingController amountController = TextEditingController();
-  final TextEditingController pinController = TextEditingController();
+  final TextEditingController refController = TextEditingController();
   final TextEditingController numberController = TextEditingController();
 
   final GlobalKey<FormState> _formKey =
       GlobalKey<FormState>(debugLabel: "send money form key");
   final Key amountKey = GlobalKey();
-  final Key pinKey = GlobalKey();
+  //final Key pinKey = GlobalKey();
   final Key numberKey = GlobalKey();
 
   bool addCharges = false;
+  String? recieverName;
 
   @override
   void dispose() {
     super.dispose();
     amountController.dispose();
-    pinController.dispose();
+    refController.dispose();
     numberController.dispose();
+  }
+
+  @override
+  void initState() {
+    recieverName = widget.recieverName;
+    super.initState();
   }
 
   @override
@@ -69,12 +78,23 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Align(
-                            alignment: Alignment.centerLeft,
-                            child: Text(
-                              "Number",
-                              style: Theme.of(context).textTheme.bodyText1,
-                            ),
-                          ),
+                              alignment: Alignment.centerLeft,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    "Number",
+                                    style:
+                                        Theme.of(context).textTheme.bodyText1,
+                                  ),
+                                  Text(
+                                    recieverName ?? "",
+                                    style:
+                                        Theme.of(context).textTheme.bodyText2,
+                                  ),
+                                ],
+                              )),
                           const SizedBox(
                             height: 5,
                           ),
@@ -89,12 +109,33 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                             keyboardType: TextInputType.number,
                             controller: numberController,
                             decoration: wemoTextFieldDecoration.copyWith(
+                                suffixIcon: IconButton(
+                                    icon: SvgPicture.asset(
+                                      "assets/svg/contact_icon.svg",
+                                      color: Theme.of(context).primaryColor,
+                                    ),
+                                    onPressed: () async {
+                                      HapticFeedback.lightImpact();
+                                      Feedback.forTap(context);
+
+                                      Map<String, String?> pickedContact =
+                                          await ContactPickerService()
+                                              .pickContact();
+                                      if (pickedContact["number"] != null) {
+                                        setState(() {
+                                          numberController.text =
+                                              pickedContact["number"]!;
+                                          recieverName = pickedContact["name"];
+                                        });
+                                      }
+                                    }),
                                 hintText: "Number"),
                             validator: (value) {
                               if (value == null ||
                                   value.isEmpty ||
-                                  value == "0") {
-                                return "Please the number to send to";
+                                  value == "0" ||
+                                  value.length < 9) {
+                                return "Please enter a valid number";
                               }
 
                               return null;
@@ -132,47 +173,35 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                   },
                 ),
                 const SizedBox(height: kDefaultPadding),
-                widget.isSendingThroughNumber!
-                    ? const SizedBox()
-                    : Align(
-                        alignment: Alignment.centerLeft,
-                        child: Text(
-                          "PIN Code",
-                          style: Theme.of(context).textTheme.bodyText1,
-                        ),
-                      ),
-                const SizedBox(
-                  height: 5,
-                ),
+                // widget.isSendingThroughNumber!
+                //     ? const SizedBox()
+                //     : Align(
+                //         alignment: Alignment.centerLeft,
+                //         child: Text(
+                //           "Reference",
+                //           style: Theme.of(context).textTheme.bodyText1,
+                //         ),
+                //       ),
+                // const SizedBox(
+                //   height: 5,
+                // ),
 
-                ///Pin Field
-                widget.isSendingThroughNumber!
-                    ? const SizedBox()
-                    : TextFormField(
-                        obscureText: true,
-                        textAlign: TextAlign.center,
-                        key: pinKey,
-                        maxLength: 5,
-                        keyboardType: TextInputType.number,
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodyText1!
-                            .copyWith(fontSize: 20),
-                        controller: pinController,
-                        decoration:
-                            wemoTextFieldDecoration.copyWith(hintText: "PIN"),
-                        validator: (value) {
-                          if (value!.length < 4 ||
-                              value == null ||
-                              value.isEmpty) {
-                            return "Please enter a valid PIN";
-                          }
-                          return null;
-                        },
-                      ),
-                const SizedBox(
-                  height: kDefaultPadding - 8,
-                ),
+                // ///Ref Field
+                // widget.isSendingThroughNumber!
+                //     ? const SizedBox()
+                //     : TextFormField(
+                //         textAlign: TextAlign.center,
+                //         style: Theme.of(context)
+                //             .textTheme
+                //             .bodyText1!
+                //             .copyWith(fontSize: 20),
+                //         controller: refController,
+                //         decoration: wemoTextFieldDecoration.copyWith(
+                //             hintText: "Reference"),
+                //       ),
+                // const SizedBox(
+                //   height: kDefaultPadding - 8,
+                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -183,7 +212,7 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                     ),
                     CupertinoSwitch(
                       value: addCharges,
-                      activeColor: kPurple,
+                      activeColor: Theme.of(context).primaryColor,
                       trackColor: kDark20,
                       thumbColor: Colors.white,
                       onChanged: (bool value) {
@@ -197,7 +226,7 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                   ],
                 ),
                 const SizedBox(
-                  height: kDefaultPadding,
+                  height: kDefaultPadding / 2,
                 ),
                 WemoButton(
                   isSmall: true,
@@ -223,10 +252,9 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                         amount: addCharges
                             ? TransactionService.calculateCharges(amount!)
                             : amount!,
-                        pin: pinController.text,
-                        name: widget.isSendingThroughNumber!
-                            ? ""
-                            : widget.recieverName!,
+                        ref: refController.text,
+                        name:
+                            widget.isSendingThroughNumber! ? "" : recieverName!,
 
                         number: widget.isSendingThroughNumber!
                             ? numberController.text
@@ -242,7 +270,11 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                   },
                 ),
                 const SizedBox(
-                  height: kDefaultPadding,
+                  height: kDefaultPadding / 2,
+                ),
+
+                const SizedBox(
+                  height: kDefaultPadding / 2,
                 ),
                 WemoButton(
                   isSmall: true,
@@ -253,8 +285,6 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                     HapticFeedback.lightImpact();
                     Feedback.forTap(context);
                     Navigator.pop(context);
-
-                    ///Todo: pop the dialog
                   },
                 ),
               ],
