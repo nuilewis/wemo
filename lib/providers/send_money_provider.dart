@@ -6,11 +6,11 @@ class SendMoneyData extends ChangeNotifier {
 
   void sendMoneyToPerson(
       {required int amount,
-      required String pin,
+      String? ref,
       required String name,
       required String number}) {
     moneyToSend =
-        SendMoney(amount: amount, pin: pin, name: name, number: number);
+        SendMoney(amount: amount, ref: ref, name: name, number: number);
 
     // print("details of person to send money successfully added to provider");
     // print(name);
