@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:wemo/constants.dart';
-import 'package:wemo/global_components/wemo_text_title.dart';
 import 'package:wemo/global_components/wemo_button.dart';
 import 'package:wemo/models/transaction_model.dart';
 import 'package:wemo/providers/momo_num_provider.dart';
 import 'package:wemo/providers/transaction_provider.dart';
+import 'package:wemo/screens/homescreen/components/show_empty_modal_bottomsheet.dart';
 import 'package:wemo/screens/homescreen/components/transaction_card.dart';
 import 'package:wemo/screens/initialsetupflowscreens/addnumberscreen.dart';
 import 'package:wemo/screens/initialsetupflowscreens/show_qr_screen.dart';
@@ -14,6 +14,7 @@ import 'package:wemo/screens/scanscreen/scan_screen.dart';
 import 'package:wemo/screens/sendscreen/send_dialog_screen.dart';
 import '../../models/momo_num_model.dart';
 import 'components/add_number_button.dart';
+import 'components/expanded_send_options.dart';
 import 'components/phone_num_card.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -21,7 +22,7 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -32,12 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final PageController pageController = PageController(viewportFraction: .8);
   bool isExpandable = false;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   void dispose() {
@@ -75,6 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Consumer2<MomoNumberData, TransactionData>(
       builder: (context, momoNumData, transactionData, child) {
         momoNumData.getSavedMomoNUmber();
+        transactionData.getSavedTransactions();
         return WillPopScope(
           onWillPop: () async {
             return false;
@@ -102,40 +98,63 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ),
 
-                      SizedBox(
-                        height: 190,
-                        width: screenSize.width,
-                        child: PageView.builder(
-                          //padEnds: false,
-                          controller: pageController,
-                          //physics:  NeverScrollableScrollPhysics(),
-                          scrollDirection: Axis.horizontal,
-                          itemCount: momoNumData.momoNumberList.length,
-                          onPageChanged: (index) {
-                            ///Setting the current index so that
-                            setState(() {
-                              currentIndex = index;
-                            });
-                            debugPrint("current index is $currentIndex");
-                          },
-                          itemBuilder: (context, index) {
-                            List<MomoNumber> momoNumbersList =
-                                momoNumData.momoNumberList;
+                      momoNumData.momoNumberList.isEmpty
+                          ? Align(
+                              alignment: Alignment.center,
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: kDefaultPadding2x,
+                                    horizontal: kDefaultPadding2x),
+                                child: Text(
+                                  "You haven't added a phone number yet, click the button to add one.",
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .copyWith(fontSize: 18),
+                                ),
+                              ),
+                            )
+                          : SizedBox(
+                              height: 190,
+                              width: screenSize.width,
+                              child: PageView.builder(
+                                //padEnds: false,
+                                controller: pageController,
+                                //physics:  NeverScrollableScrollPhysics(),
+                                scrollDirection: Axis.horizontal,
+                                itemCount: momoNumData.momoNumberList.length,
+                                onPageChanged: (index) {
+                                  ///Setting the current index so that
+                                  setState(() {
+                                    currentIndex = index;
+                                  });
+                                  debugPrint("current index is $currentIndex");
+                                },
+                                itemBuilder: (context, index) {
+                                  List<MomoNumber> momoNumbersList =
+                                      momoNumData.momoNumberList;
 
-                            return Center(
-                              child: PhoneNumberCard(
-                                  number: momoNumbersList[index].number,
-                                  name: momoNumbersList[index].name,
-                                  network: momoNumbersList[index]
-                                      .network
-                                      .toString() //convert network type to string
-                                      .substring(
-                                          12) //remove "NetworkType." from converted string to get actual network
-                                      .toUpperCase()),
-                            );
-                          },
-                        ),
-                      ),
+                                  return Center(
+                                    child: PhoneNumberCard(
+                                        onDelete: () {
+                                          HapticFeedback.lightImpact();
+                                          Feedback.forTap(context);
+                                          momoNumData.deleteMomoNUmber(context,
+                                              index: index);
+                                        },
+                                        number: momoNumbersList[index].number,
+                                        name: momoNumbersList[index].name,
+                                        network: momoNumbersList[index]
+                                            .network
+                                            .toString() //convert network type to string
+                                            .substring(
+                                                12) //remove "NetworkType." from converted string to get actual network
+                                            .toUpperCase()),
+                                  );
+                                },
+                              ),
+                            ),
 
                       ///Phone Numbers
                       AddNumberButton(
@@ -161,9 +180,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
                       ///History
                       Padding(
-                        padding: const EdgeInsets.only(left: kDefaultPadding2x),
+                        padding: const EdgeInsets.only(
+                            left: kDefaultPadding2x, top: kDefaultPadding),
                         child: Text(
-                          "History",
+                          "Transactions",
                           style: Theme.of(context).textTheme.headline1,
                         ),
                       ),
@@ -185,14 +205,16 @@ class _HomeScreenState extends State<HomeScreen> {
                                       style: Theme.of(context)
                                           .textTheme
                                           .headline1!
-                                          .copyWith(color: kPurple),
+                                          .copyWith(
+                                              color: Theme.of(context)
+                                                  .primaryColor),
                                       textAlign: TextAlign.center,
                                     ),
                                     const SizedBox(
                                       height: kDefaultPadding,
                                     ),
                                     Text(
-                                      "You haven't done any transactions with this number, once you perform a transaction, it'll appear here.",
+                                      "You haven't done any transactions yet, once you perform a transaction, it'll appear here.",
                                       style:
                                           Theme.of(context).textTheme.bodyText2,
                                       textAlign: TextAlign.center,
@@ -201,29 +223,39 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ),
                             )
-                          : Expanded(
-                              child: ListView.builder(
-                                  itemCount:
-                                      transactionData.transactionsList.length,
-                                  itemBuilder: (context, index) {
-                                    List<Transaction> transactionList =
-                                        transactionData.transactionsList;
+                          : ListView.builder(
+                              itemCount:
+                                  transactionData.transactionsList.length,
+                              physics: const NeverScrollableScrollPhysics(),
+                              shrinkWrap: true,
+                              padding: EdgeInsets.zero,
+                              itemBuilder: (context, index) {
+                                List<Transaction> transactionList =
+                                    transactionData.transactionsList;
 
-                                    return TransactionCard(
-                                        amount: transactionList[index]
-                                            .amount
-                                            .toString(),
-                                        number: transactionList[index]
-                                            .number
-                                            .toString(),
-                                        name: transactionList[index]
-                                            .name
-                                            .toString(),
-                                        time: transactionList[index].time,
-                                        transactionType: transactionList[index]
-                                            .transactionType);
-                                  }),
-                            )
+                                return TransactionCard(
+                                    onDelete: () {
+                                      HapticFeedback.lightImpact();
+                                      Feedback.forTap(context);
+                                      transactionData.removeTransaction(context,
+                                          index: index);
+                                    },
+                                    amount: transactionList[index]
+                                        .amount
+                                        .toString(),
+                                    number: transactionList[index]
+                                        .number
+                                        .toString(),
+                                    name:
+                                        transactionList[index].name.toString(),
+                                    time: DateTime.fromMillisecondsSinceEpoch(
+                                        transactionList[index].time),
+                                    transactionType: transactionList[index]
+                                        .transactionType
+                                        .toString());
+                              }),
+
+                      const SizedBox(height: kDefaultPadding2x * 4),
                     ],
                   ),
                 ),
@@ -266,7 +298,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 isExpandable = !isExpandable;
                               });
                             },
-                            iconLink: "assets/svg/received_icon.svg",
+                            iconLink: "assets/svg/send_icon.svg",
                           ),
                         ),
                         const SizedBox(
@@ -274,7 +306,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         Expanded(
                           child: WemoButton(
-                            bgColor: kPurple,
+                            bgColor: Theme.of(context).primaryColor,
                             isSmall: true,
                             textColor: Colors.white,
                             title: "Receive",
@@ -288,10 +320,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                   isDismissible: true,
                                   context: context,
                                   builder: (context) {
-                                    return ShowQRCodeScreen(
-                                      onRecievedTapped: true,
-                                      index: currentIndex,
-                                    );
+                                    if (momoNumData.momoNumberList.isEmpty) {
+                                      return const ShowEmptyModalScreen();
+                                    } else {
+                                      return ShowQRCodeScreen(
+                                        onRecievedTapped: true,
+                                        index: currentIndex,
+                                      );
+                                    }
                                   });
                             },
                             iconLink: "assets/svg/received_icon.svg",
@@ -306,49 +342,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         );
       },
-    );
-  }
-}
-
-class ExpandedSendOptions extends StatelessWidget {
-  final VoidCallback onScanPressed;
-  final VoidCallback onNumberPressed;
-  const ExpandedSendOptions(
-      {Key? key, required this.onScanPressed, required this.onNumberPressed})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(kDefaultPadding2x),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(kDefaultPadding + 8),
-          color: Colors.white,
-          boxShadow: const [BoxShadow(blurRadius: 30, color: kPurple20)]),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          GestureDetector(
-            onTap: onScanPressed,
-            child: const WemoTitle(
-              textColor: kPurple80,
-              title: "Scan",
-              showIcon: true,
-              iconLink: "assets/svg/scan_icon.svg",
-            ),
-          ),
-          const SizedBox(height: kDefaultPadding2x),
-          GestureDetector(
-            onTap: onNumberPressed,
-            child: const WemoTitle(
-              textColor: kPurple80,
-              title: "Input Number",
-              showIcon: true,
-              iconLink: "assets/svg/rounded_plus_icon.svg",
-            ),
-          ),
-        ],
-      ),
     );
   }
 }
