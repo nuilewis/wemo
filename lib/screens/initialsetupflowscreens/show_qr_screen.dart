@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:wemo/providers/momo_num_provider.dart';
 import 'package:wemo/screens/homescreen/homescreen.dart';
 import 'package:wemo/screens/recievescreen/components/show_qr.dart';
+import 'package:wemo/services/pdf_service.dart';
 import 'package:wemo/services/qr_service.dart';
 import '../../constants.dart';
 import '../../global_components/wemo_button.dart';
@@ -96,7 +97,7 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
                 style: Theme.of(context)
                     .textTheme
                     .headline1!
-                    .copyWith(color: kPurple),
+                    .copyWith(color: Theme.of(context).primaryColor),
               ),
               Text(
                 momoNumData.momoNumberList[index!].number.toString(),
@@ -114,8 +115,13 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
                         HapticFeedback.lightImpact();
                         Feedback.forTap(context);
 
-                        ///Todo: add methods to print to PDF.
+                        ///TODO: add methods to print to PDF.
                         ///
+                        PDFService().createWemoPdf(
+                          name: momoNumData.momoNumberList[index!].name,
+                          number: momoNumData.momoNumberList[index!].number,
+                        );
+
                         if (widget.isCalledFromHomeScreen == true) {
                           debugPrint(
                               "qr screen is popping until to return to homescreen");
