@@ -2,20 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../../constants.dart';
-import '../../../enums/wemo_enums.dart';
 
 class TransactionCard extends StatefulWidget {
   final String amount;
   final String number;
   final String name;
   final DateTime time;
-  final TransactionType transactionType;
+  final String transactionType;
+  final VoidCallback onDelete;
+  //final String transactionType;
   const TransactionCard(
       {Key? key,
       required this.amount,
       required this.number,
       required this.name,
       required this.time,
+      required this.onDelete,
       required this.transactionType})
       : super(key: key);
 
@@ -35,11 +37,17 @@ class _TransactionCardState extends State<TransactionCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(right: kDefaultPadding),
+      margin: const EdgeInsets.symmetric(
+          horizontal: kDefaultPadding, vertical: kDefaultPadding / 2),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(kDefaultPadding + 8),
-      ),
-      color: Theme.of(context).cardColor,
+          borderRadius: BorderRadius.circular(kDefaultPadding + 8),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+                blurRadius: kDefaultPadding,
+                color: kPurple20.withOpacity(.08),
+                offset: const Offset(10, 0)),
+          ]),
       width: double.infinity,
       padding: const EdgeInsets.all(kDefaultPadding),
       alignment: Alignment.topLeft,
@@ -52,10 +60,16 @@ class _TransactionCardState extends State<TransactionCard> {
               children: [
                 TextSpan(
                     text: widget.amount,
-                    style: Theme.of(context).textTheme.headline1),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline1!
+                        .copyWith(color: Theme.of(context).primaryColor)),
                 TextSpan(
                     text: " FCFA",
-                    style: Theme.of(context).textTheme.headline2),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline2!
+                        .copyWith(color: Theme.of(context).primaryColor)),
               ],
             ),
           ),
@@ -66,7 +80,7 @@ class _TransactionCardState extends State<TransactionCard> {
             text: TextSpan(
               children: [
                 TextSpan(
-                    text: widget.number,
+                    text: " ${widget.number} ",
                     style: Theme.of(context).textTheme.bodyText1),
                 TextSpan(
                     text: widget.name,
@@ -80,21 +94,30 @@ class _TransactionCardState extends State<TransactionCard> {
           Row(
             children: [
               SvgPicture.asset(
-                (widget.transactionType == TransactionType.sent)
+                (widget.transactionType == "TransactionType.sent")
                     ? "assets/svg/send_icon.svg"
                     : "assets/svg/received_icon.svg",
-                color: (widget.transactionType == TransactionType.sent)
+                color: (widget.transactionType == "TransactionType.sent")
                     ? kFuchsia
                     : kGreen,
               ),
+              const SizedBox(width: kDefaultPadding),
               Text(
                 ///Interpolating the time
                 "${widget.time.day} ${monthsOfYear[widget.time.month]} ${widget.time.year} ${formattedTime.format(context)}",
                 style: Theme.of(context)
                     .textTheme
                     .bodyText2!
-                    .copyWith(color: kDark40, fontSize: 12),
-              )
+                    .copyWith(color: kDark40, fontSize: 14),
+              ),
+              const Spacer(),
+              IconButton(
+                onPressed: widget.onDelete,
+                icon: SvgPicture.asset(
+                  "assets/svg/trash_icon.svg",
+                  color: kFuchsia,
+                ),
+              ),
             ],
           )
         ],
