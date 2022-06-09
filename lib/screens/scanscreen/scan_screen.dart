@@ -1,10 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
+
 import 'package:wemo/constants.dart';
+import 'package:wemo/global_components/wemo_snackbar.dart';
 import 'package:wemo/screens/sendscreen/send_dialog_screen.dart';
 
 import '../onboardingscreen/components/round_button.dart';
@@ -22,89 +22,54 @@ class _ScanScreenState extends State<ScanScreen> {
   String flashIconLInk = "assets/svg/flash_on_icon.svg";
   bool flashOn = false;
 
-  QRViewController? qrViewController;
-  Barcode? result;
-
-//We have to pause the camera so hot reload can work
-  @override
-  void reassemble() {
-    super.reassemble();
-    if (Platform.isAndroid) {
-      qrViewController!.pauseCamera();
-    } else if (Platform.isIOS) {
-      qrViewController!.resumeCamera();
-    }
-  }
-
-  void readQr(QRViewController qrViewController) async {
-    if (result != null) {
-      qrViewController.pauseCamera();
-      debugPrint(result!.code);
-      qrViewController.dispose();
-    }
-  }
-
-  void _onQRViewCreated(QRViewController qrViewController) {
-    this.qrViewController = qrViewController;
-    qrViewController.scannedDataStream.listen((
-      scanData,
-    ) {
-      setState(() {
-        result = scanData;
-      });
-
-      if (result?.code != null) {
-        qrViewController.pauseCamera();
-        debugPrint("scan data result is ${result?.code}");
-
-        HapticFeedback.heavyImpact();
-        // ScaffoldMessenger.of(context)
-        //     .showSnackBar(SnackBar(content: Text(result?.code ?? "null")));
-
-        ///Take the result and split into the name and number
-        String? joinedResultString = result?.code;
-
-        String receiverNumber = joinedResultString!.substring(0, 9);
-        //number will never be null because of the if check
-
-        String receiverName = joinedResultString.substring(9);
-
-        ///Showing the Popup when it scans the QR
-
-        showDialog(
-            context: context,
-            builder: (context) {
-              return SendDialogScreen(
-                receiverName: receiverName,
-                receiverNumber: receiverNumber,
-                isSendingthroughNumber: false,
-              );
-            });
-      }
-    });
-  }
+  ///-------------Adding Mobile Scanner Package ---------///
+  MobileScannerController cameraController = MobileScannerController();
 
   @override
   void dispose() {
+    cameraController.dispose();
     super.dispose();
-    qrViewController?.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
+    final Size screenSize = MediaQuery.of(context).size;
     return Scaffold(
       body: Stack(
         children: [
-          QRView(
-            key: qrKey,
-            onQRViewCreated: _onQRViewCreated,
-            overlay: QrScannerOverlayShape(
-                borderColor: kPurple,
-                borderRadius: 28,
-                borderLength: 30,
-                borderWidth: 10,
-                cutOutSize: 250),
-          ),
+          MobileScanner(
+              controller: cameraController,
+              allowDuplicates: false,
+              onDetect: (
+                Barcode barcode,
+                MobileScannerArguments? args,
+              ) {
+                if (barcode.rawValue == null) {
+                  debugPrint("Failed to scan QR");
+                  wemoSnackBar(context,
+                      message: "Failed to Scan Code", success: false);
+                } else {
+                  ///Take the result and split into the name and number
+                  final String resultCode = barcode.rawValue!;
+                  HapticFeedback.heavyImpact();
+                  Navigator.pop(context);
+                  String receiverNumber = resultCode.substring(0, 9);
+                  //number will never be null because of the if check
+
+                  String receiverName = resultCode.substring(9);
+
+                  ///Showing the Popup when it scans the QR
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return SendDialogScreen(
+                          receiverName: receiverName,
+                          receiverNumber: receiverNumber,
+                          isSendingthroughNumber: false,
+                        );
+                      });
+                }
+              }),
           Padding(
             padding: const EdgeInsets.only(bottom: kDefaultPadding2x * 3),
             child: Align(
@@ -116,9 +81,8 @@ class _ScanScreenState extends State<ScanScreen> {
                 onPressed: () {
                   HapticFeedback.lightImpact();
                   Feedback.forTap(context);
-                  qrViewController?.toggleFlash();
+                  cameraController.toggleTorch();
 
-                  qrViewController?.resumeCamera();
                   setState(() {
                     flashOn = !flashOn;
                   });
@@ -142,6 +106,17 @@ class _ScanScreenState extends State<ScanScreen> {
               ),
             ),
           ),
+          Center(
+            child: Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(kDefaultPadding2x),
+                border:
+                    Border.all(color: Theme.of(context).primaryColor, width: 3),
+              ),
+              width: screenSize.width * .7,
+              height: screenSize.width * .7,
+            ),
+          )
         ],
       ),
     );
