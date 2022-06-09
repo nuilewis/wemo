@@ -9,9 +9,9 @@
 <!--            android:gravity="center"-->
 <!--            android:src="@drawable/ic_wemo_logo" />-->
 <!--    </item>-->
-<!--   <item-->
-<!--   android:gravity="center"-->
-<!--       android:src="@drawable/wemo_splash">-->
-<!--   </item>-->
+   <item
+   android:gravity="center"
+       android:src="@drawable/ic_wemo_splash">
+   </item>
 
 </layer-list>
