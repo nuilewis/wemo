@@ -12,11 +12,17 @@ import '../../constants.dart';
 
 import '../../providers/send_money_provider.dart';
 
-class ConfirmAndSendDialog extends StatelessWidget {
+class ConfirmAndSendDialog extends StatefulWidget {
   const ConfirmAndSendDialog({
     Key? key,
   }) : super(key: key);
 
+  @override
+  State<ConfirmAndSendDialog> createState() => _ConfirmAndSendDialogState();
+}
+
+class _ConfirmAndSendDialogState extends State<ConfirmAndSendDialog> {
+  bool isDoingWork = false;
   @override
   Widget build(BuildContext context) {
     final Size screenSize = MediaQuery.of(context).size;
@@ -49,22 +55,27 @@ class ConfirmAndSendDialog extends StatelessWidget {
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1!
-                                .copyWith(color: kPurple, fontSize: 20)),
+                                .copyWith(
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 20)),
                         TextSpan(
-                            text: " to",
+                            text: " to ",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1!
                                 .copyWith(fontSize: 20)),
                         TextSpan(
-                            text:
-                                " ${sendMoneyData.moneyToSend?.name == "" ? sendMoneyData.moneyToSend?.number : sendMoneyData.moneyToSend?.name}",
+                            text: sendMoneyData.moneyToSend?.name == ""
+                                ? "${sendMoneyData.moneyToSend?.number}"
+                                : "${sendMoneyData.moneyToSend?.name} ${sendMoneyData.moneyToSend?.number}",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1!
-                                .copyWith(color: kPurple, fontSize: 20)),
+                                .copyWith(
+                                    color: Theme.of(context).primaryColor,
+                                    fontSize: 20)),
                         TextSpan(
-                            text: "?",
+                            text: " ?",
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1!
@@ -74,6 +85,7 @@ class ConfirmAndSendDialog extends StatelessWidget {
                   ),
                   const SizedBox(height: kDefaultPadding),
                   WemoButton(
+                    isDoingWork: isDoingWork,
                     isSmall: true,
                     textColor: Colors.white,
                     title: "Confirm & Send",
@@ -83,42 +95,68 @@ class ConfirmAndSendDialog extends StatelessWidget {
                       HapticFeedback.lightImpact();
                       Feedback.forTap(context);
 
+                      setState(() {
+                        isDoingWork = !isDoingWork;
+                      });
+
                       ///Dial ussd code
                       ///
 
-                      // WemoUSSDService().requestUSSD(
+                      WemoUSSDService().requestUSSD(
+                        number: sendMoneyData.moneyToSend!.number,
+                        ref: sendMoneyData.moneyToSend?.ref,
+                        amount: sendMoneyData.moneyToSend!.amount,
+                      );
+//Add an attempted transaction
+                      transactionData.addTransaction(
+                        Transaction(
+                          // charges: TransactionService.calculateCharges(
+                          //       sendMoneyData.moneyToSend!.amount) -
+                          //      sendMoneyData.moneyToSend!.amount,
+                          name: sendMoneyData.moneyToSend!.name,
+                          network: TransactionService.determineNetwork(
+                                  sendMoneyData.moneyToSend!.number)
+                              .toString(),
+                          transactionType: TransactionType.sent.toString(),
+                          number: sendMoneyData.moneyToSend!.number,
+                          time: DateTime.now().millisecondsSinceEpoch,
+                          amount: sendMoneyData.moneyToSend!.amount,
+                        ),
+                      );
+                      // await WemoUSSDService().requestMtnMomo(
+                      //   context,
                       //   number: sendMoneyData.moneyToSend!.number,
                       //   pin: sendMoneyData.moneyToSend!.pin,
                       //   amount: sendMoneyData.moneyToSend!.amount,
                       // );
-                      await WemoUSSDService().requestMtnMomo(
-                        context,
-                        number: sendMoneyData.moneyToSend!.number,
-                        pin: sendMoneyData.moneyToSend!.pin,
-                        amount: sendMoneyData.moneyToSend!.amount,
-                      );
 
-                      if (transactionData.transactionResult != null) {
-                        return;
-                      } else if (transactionData.transactionResult!
-                          .contains("succesful transfer")) {
-                        ///Add a new transaction if the transaction is successful
-                        transactionData.addTransaction(
-                          Transaction(
-                            charges: TransactionService.calculateCharges(
-                                    sendMoneyData.moneyToSend!.amount) -
-                                sendMoneyData.moneyToSend!.amount,
-                            name: sendMoneyData.moneyToSend!.name,
-                            network: TransactionService.determinNetwork(
-                                    sendMoneyData.moneyToSend!.number)
-                                .toString(),
-                            transactionType: TransactionType.sent,
-                            number: sendMoneyData.moneyToSend!.number,
-                            time: DateTime.now(),
-                            amount: sendMoneyData.moneyToSend!.amount,
-                          ),
-                        );
-                      }
+                      // if (transactionData.transactionResult != null) {
+                      //   return;
+                      // } else if (transactionData.transactionResult!
+                      //     .contains("succesful transfer")) {
+                      //   ///Add a new transaction if the transaction is successful
+                      //   transactionData.addTransaction(
+                      //     Transaction(
+                      //       charges: TransactionService.calculateCharges(
+                      //               sendMoneyData.moneyToSend!.amount) -
+                      //           sendMoneyData.moneyToSend!.amount,
+                      //       name: sendMoneyData.moneyToSend!.name,
+                      //       network: TransactionService.determinNetwork(
+                      //               sendMoneyData.moneyToSend!.number)
+                      //           .toString(),
+                      //       transactionType: TransactionType.sent,
+                      //       number: sendMoneyData.moneyToSend!.number,
+                      //       time: DateTime.now(),
+                      //       amount: sendMoneyData.moneyToSend!.amount,
+                      //     ),
+                      //   );
+                      // }
+
+                      ///Also pop the page when you click send
+
+                      Future.delayed(const Duration(seconds: 2), () {
+                        Navigator.pop(context);
+                      });
                     },
                   ),
                   const SizedBox(
@@ -132,8 +170,7 @@ class ConfirmAndSendDialog extends StatelessWidget {
                     onPressed: () {
                       HapticFeedback.lightImpact();
                       Feedback.forTap(context);
-Navigator.pop(context);
-                      
+                      Navigator.pop(context);
                     },
                   ),
                 ],
