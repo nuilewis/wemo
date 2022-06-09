@@ -96,8 +96,8 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                                     color: Theme.of(context).iconTheme.color,
                                   )),
                             )
-                          : Spacer(),
-                      SizedBox(height: kDefaultPadding),
+                          : const Spacer(),
+                      const SizedBox(height: kDefaultPadding),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -105,7 +105,7 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                           style: Theme.of(context)
                               .textTheme
                               .headline1!
-                              .copyWith(color: kPurple),
+                              .copyWith(color: Theme.of(context).primaryColor),
                         ),
                       ),
                       const Spacer(),
@@ -134,7 +134,7 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
-                              .copyWith(color: kPurple),
+                              .copyWith(color: Theme.of(context).primaryColor),
                         ),
                       ),
                       const SizedBox(

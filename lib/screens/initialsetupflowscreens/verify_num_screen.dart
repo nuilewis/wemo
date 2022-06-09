@@ -62,7 +62,7 @@ class _VerifyNumberScreenState extends State<VerifyNumberScreen> {
                 style: Theme.of(context)
                     .textTheme
                     .headline1!
-                    .copyWith(color: kPurple),
+                    .copyWith(color: Theme.of(context).primaryColor),
                 decoration: InputDecoration(
                   errorStyle: Theme.of(context)
                       .textTheme
@@ -89,7 +89,7 @@ class _VerifyNumberScreenState extends State<VerifyNumberScreen> {
                     if (_formKey.currentState!.validate()) {
                       ///If verifcation is valid then proceed to do the following logic
 
-                      ///Todo: add method to verify phone number eventually
+                      ///TODO: add method to verify phone number eventually
                       widget.navigateToNextPage();
                       //Navigate to next page if verification is complete
                     }
