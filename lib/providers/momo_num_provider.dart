@@ -3,6 +3,8 @@ import 'package:wemo/models/momo_num_model.dart';
 import 'package:wemo/services/shared_prefs/shared_prefs_methods.dart';
 import 'package:wemo/services/transaction_service.dart';
 
+import '../global_components/wemo_snackbar.dart';
+
 class MomoNumberData extends ChangeNotifier {
   List<MomoNumber> momoNumberList = [];
 
@@ -20,22 +22,22 @@ class MomoNumberData extends ChangeNotifier {
     MomoNumber momoNumberToAddAndSave = MomoNumber(
         name: name,
         number: number,
-        network: TransactionService.determinNetwork(number).toString());
+        network: TransactionService.determineNetwork(number).toString());
     // momoNumberList.add(momoNumberToAddAndSave);
 
     //also add to saved momo numbers
     addToMomoSavedList(numberToSave: momoNumberToAddAndSave);
     getSavedMomoNUmber();
 
-    debugPrint("momoList is ${momoNumberList[0]}");
     notifyListeners();
   }
 
-  void deleteMomoNUmber(int index) {
-    momoNumberList.removeAt(index);
+  void deleteMomoNUmber(BuildContext context, {required int index}) {
+    //   momoNumberList.removeAt(index);
 
     //also delete momoNumber from saved List
     removeMomoNumFromSavedList(index);
+    wemoSnackBar(context, message: "Deleted", success: false);
     notifyListeners();
   }
 }

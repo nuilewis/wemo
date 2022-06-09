@@ -38,7 +38,7 @@ class RoundedButton extends StatelessWidget {
           ],
         ),
         child: SvgPicture.asset(
-          "assets/svg/forward_icon.svg",
+         iconLink,
           color: iconColor ?? Colors.white,
         ),
       ),
