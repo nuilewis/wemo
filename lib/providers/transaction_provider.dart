@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:wemo/global_components/wemo_snackbar.dart';
 import 'package:wemo/services/shared_prefs/shared_prefs_methods.dart';
 
 import '../models/transaction_model.dart';
@@ -9,13 +10,10 @@ class TransactionData extends ChangeNotifier {
   String? transactionResult;
 
   void getSavedTransactions() {
-    initSharedPrefs();
-
-    List<Transaction> savedTransactionList = savedTransactionsList;
-    if (savedTransactionList.isNotEmpty) {
+    List<Transaction> savedTransList = savedTransactionsList;
+    if (savedTransList.isNotEmpty) {
       transactionsList = savedTransactionsList;
     }
-    notifyListeners();
   }
 
   void addTransaction(Transaction transaction) {
@@ -23,13 +21,18 @@ class TransactionData extends ChangeNotifier {
     //also add save to shared prefs
 
     addToTransactionSavedList(transactionToSave: transaction);
+    getSavedTransactions();
     notifyListeners();
   }
 
-  void removeTransaction(index) {
-    transactionsList.removeAt(index);
+  void removeTransaction(
+    BuildContext context, {
+    required int index,
+  }) {
+    // transactionsList.removeAt(index);
     //Also remove from transaction List
     removeTransactionFromSavedList(index);
+    wemoSnackBar(context, message: "Deleted", success: false);
     notifyListeners();
   }
 
