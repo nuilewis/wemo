@@ -1,11 +1,11 @@
 import 'package:wemo/enums/wemo_enums.dart';
 
 class TransactionService {
-  static NetworkType determinNetwork(String phoneNumber) {
+  static NetworkType determineNetwork(String phoneNumber) {
     NetworkType networkType = NetworkType.mtn;
 
     ///takes the phone number and returns the network
-    ///but befor that, first remove any 237 in the number before making checking
+    ///but before that, first remove any 237 in the number before making checking
 
     ///Removing '237's
     ///
@@ -18,10 +18,27 @@ class TransactionService {
 
     if (phoneNumber.startsWith("67") ||
         phoneNumber.startsWith("68") ||
-        phoneNumber.startsWith("65")) {
+        phoneNumber.startsWith("650") ||
+        phoneNumber.startsWith("651") ||
+        phoneNumber.startsWith("652") ||
+        phoneNumber.startsWith("653") ||
+        phoneNumber.startsWith("654")) {
       networkType = NetworkType.mtn;
-    } else if (phoneNumber.startsWith("69") || phoneNumber.startsWith("65")) {
+    } else if (phoneNumber.startsWith("69") ||
+        phoneNumber.startsWith("655") ||
+        phoneNumber.startsWith("656") ||
+        phoneNumber.startsWith("657") ||
+        phoneNumber.startsWith("658") ||
+        phoneNumber.startsWith("659")) {
       networkType = NetworkType.orange;
+    } else if (phoneNumber.startsWith("66")) {
+      networkType = NetworkType.nexttel;
+    } else if (phoneNumber.startsWith("222") ||
+        phoneNumber.startsWith("233") ||
+        phoneNumber.startsWith("242") ||
+        phoneNumber.startsWith("243") ||
+        phoneNumber.startsWith("62")) {
+      networkType = NetworkType.camtel;
     }
 
     return networkType;
