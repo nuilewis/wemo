@@ -109,6 +109,14 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                         ),
                       ),
                       const Spacer(),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "MoMo Name",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ),
+                      const SizedBox(height: kDefaultPadding / 2),
                       TextFormField(
                         key: nameKey,
                         validator: (value) {
@@ -138,8 +146,16 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                         ),
                       ),
                       const SizedBox(
-                        height: kDefaultPadding,
+                        height: kDefaultPadding2x,
                       ),
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Number",
+                          style: Theme.of(context).textTheme.bodyText1,
+                        ),
+                      ),
+                      const SizedBox(height: kDefaultPadding / 2),
                       TextFormField(
                         key: numberKey,
                         maxLength: 9,
