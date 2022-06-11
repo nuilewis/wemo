@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 void wemoSnackBar(BuildContext context,
-    {required String message, required bool success}) {
+    {required String message, required bool isSuccess}) {
   final customSnackBar = SnackBar(
     behavior: SnackBarBehavior.floating,
     shape: RoundedRectangleBorder(
@@ -14,10 +14,10 @@ void wemoSnackBar(BuildContext context,
         vertical: kDefaultPadding2x, horizontal: kDefaultPadding),
     padding: const EdgeInsets.symmetric(
         vertical: kDefaultPadding2x, horizontal: kDefaultPadding),
-    backgroundColor: success ? Colors.white : kFuchsia,
+    backgroundColor: isSuccess ? Colors.white : kFuchsia,
     content: Text(
       message,
-      style: success
+      style: isSuccess
           ? Theme.of(context).textTheme.bodyText2
           : Theme.of(context)
               .textTheme
