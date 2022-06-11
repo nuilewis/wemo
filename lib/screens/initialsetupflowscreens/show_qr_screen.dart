@@ -1,5 +1,7 @@
-import 'package:flutter/material.dart';
+// ignore_for_file: use_build_context_synchronously
 
+import 'dart:typed_data';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:wemo/providers/momo_num_provider.dart';
@@ -111,15 +113,20 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
                   : WemoButton(
                       textColor: Colors.white,
                       title: "Save",
-                      onPressed: () {
+                      onPressed: () async {
                         HapticFeedback.lightImpact();
                         Feedback.forTap(context);
 
-                        ///TODO: add methods to print to PDF.
-                        ///
-                        PDFService().createWemoPdf(
+                        final Uint8List pdfDocData =
+                            await PDFService().createWemoPdf(
                           name: momoNumData.momoNumberList[index!].name,
                           number: momoNumData.momoNumberList[index!].number,
+                        );
+  
+                        PDFService().savePDFFIle(
+                          context,
+                          momoNumData.momoNumberList[index!].name,
+                          pdfDocData,
                         );
 
                         if (widget.isCalledFromHomeScreen == true) {
