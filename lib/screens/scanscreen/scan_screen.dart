@@ -47,7 +47,7 @@ class _ScanScreenState extends State<ScanScreen> {
                 if (barcode.rawValue == null) {
                   debugPrint("Failed to scan QR");
                   wemoSnackBar(context,
-                      message: "Failed to Scan Code", success: false);
+                      message: "Failed to Scan Code", isSuccess: false);
                 } else {
                   ///Take the result and split into the name and number
                   final String resultCode = barcode.rawValue!;

@@ -80,19 +80,25 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                           Align(
                               alignment: Alignment.centerLeft,
                               child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
+                                // mainAxisAlignment:
+                                // MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     "Number",
                                     style:
                                         Theme.of(context).textTheme.bodyText1,
                                   ),
+                                  const Spacer(),
                                   Text(
                                     recieverName ?? "",
-                                    style:
-                                        Theme.of(context).textTheme.bodyText2,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodyText1!
+                                        .copyWith(
+                                            color:
+                                                Theme.of(context).primaryColor),
                                   ),
+                                  const SizedBox(width: kDefaultPadding / 2),
                                 ],
                               )),
                           const SizedBox(
@@ -253,8 +259,7 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                             ? TransactionService.calculateCharges(amount!)
                             : amount!,
                         ref: refController.text,
-                        name:
-                            widget.isSendingThroughNumber! ? "" : recieverName!,
+                        name: recieverName!,
 
                         number: widget.isSendingThroughNumber!
                             ? numberController.text
