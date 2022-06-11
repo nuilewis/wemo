@@ -47,6 +47,7 @@ dependencies:
   pdf: ^3.6.4
   path_provider: ^2.0.10
   fluttercontactpicker: ^4.7.0
+  permission_handler: ^9.2.0
   
 
  
@@ -81,6 +82,7 @@ flutter:
     - assets/svg/
     - assets/images/
     - assets/fonts/
+    - assets/fonts/Urbanist-Regular.ttf
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
