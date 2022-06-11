@@ -32,7 +32,7 @@ class TransactionData extends ChangeNotifier {
     // transactionsList.removeAt(index);
     //Also remove from transaction List
     removeTransactionFromSavedList(index);
-    wemoSnackBar(context, message: "Deleted", success: false);
+    wemoSnackBar(context, message: "Deleted", isSuccess: false);
     notifyListeners();
   }
 

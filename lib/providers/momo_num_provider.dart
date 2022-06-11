@@ -37,7 +37,7 @@ class MomoNumberData extends ChangeNotifier {
 
     //also delete momoNumber from saved List
     removeMomoNumFromSavedList(index);
-    wemoSnackBar(context, message: "Deleted", success: false);
+    wemoSnackBar(context, message: "Deleted", isSuccess: false);
     notifyListeners();
   }
 }
