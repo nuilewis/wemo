@@ -9,10 +9,10 @@ class WemoUSSDService {
 
     // String mtnMomoCode =
     //     "*126*1*1*$number*$amount* ${ref??""} | Transferred with Wemo#";
-    String mtnShortCodewithRef =
-        "*126*9*$number*$amount*${ref ?? ""} | Transferred with Wemo#";
+   // String mtnShortCodewithRef =
+   //     "*126*9*$number*$amount*${ref ?? ""} | Transferred with Wemo#";
     String mtnShortCode = "*126*9*$number*$amount#";
-    String orangeCode = "#150*1*1*$number*$amount#";
+    //String orangeCode = "#150*1*1*$number*$amount#";
 
     try {
       // String? result = await UssdAdvanced.sendAdvancedUssd(
