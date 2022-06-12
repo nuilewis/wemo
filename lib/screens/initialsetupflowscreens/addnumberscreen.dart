@@ -86,7 +86,7 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                       widget.showBackButton
                           ? Padding(
                               padding: const EdgeInsets.only(
-                                  top: kDefaultPadding2x * 2),
+                                  top: kDefaultPadding * 3),
                               child: IconButton(
                                   onPressed: () {
                                     Navigator.pop(context);
@@ -108,7 +108,7 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                               .copyWith(color: Theme.of(context).primaryColor),
                         ),
                       ),
-                      const Spacer(),
+                      const SizedBox(height: kDefaultPadding2x),
                       Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
@@ -139,14 +139,11 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                         padding: const EdgeInsets.only(left: 4),
                         child: Text(
                           "Please enter the exact name your momo account is registered with",
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyText2!
-                              .copyWith(color: Theme.of(context).primaryColor),
+                          style: Theme.of(context).textTheme.bodyText2,
                         ),
                       ),
                       const SizedBox(
-                        height: kDefaultPadding2x,
+                        height: kDefaultPadding,
                       ),
                       Align(
                         alignment: Alignment.centerLeft,
