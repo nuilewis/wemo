@@ -6,19 +6,20 @@ void wemoSnackBar(BuildContext context,
     {required String message, required bool isSuccess}) {
   final customSnackBar = SnackBar(
     behavior: SnackBarBehavior.floating,
+fixed snackbar Ui    duration: const Duration(seconds: 1),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20),
     ),
     elevation: 20,
     margin: const EdgeInsets.symmetric(
-        vertical: kDefaultPadding2x, horizontal: kDefaultPadding),
+        vertical: kDefaultPadding2x - 8, horizontal: kDefaultPadding),
     padding: const EdgeInsets.symmetric(
-        vertical: kDefaultPadding2x, horizontal: kDefaultPadding),
-    backgroundColor: isSuccess ? Colors.white : kFuchsia,
+        vertical: kDefaultPadding2x - 8, horizontal: kDefaultPadding),
+    backgroundColor: isSuccess ? kGreen : kFuchsia,
     content: Text(
       message,
       style: isSuccess
-          ? Theme.of(context).textTheme.bodyText2
+          ? Theme.of(context).textTheme.bodyText1!.copyWith(color: Colors.white)
           : Theme.of(context)
               .textTheme
               .bodyText1!
