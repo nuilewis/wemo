@@ -36,6 +36,7 @@ class ShowQRCodeScreen extends StatefulWidget {
 
 class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
   int? index;
+  bool isDoingWork = false;
 
   @override
   void initState() {
@@ -51,6 +52,7 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
   @override
   Widget build(BuildContext context) {
     Size screenSize = MediaQuery.of(context).size;
+
     return Consumer<MomoNumberData>(builder: (context, momoNumData, child) {
       //if an index is not provided, then show the last
 
@@ -113,16 +115,19 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
                   : WemoButton(
                       textColor: Colors.white,
                       title: "Save",
+                      isDoingWork: isDoingWork,
                       onPressed: () async {
                         HapticFeedback.lightImpact();
                         Feedback.forTap(context);
-
+                        setState(() {
+                          isDoingWork = !isDoingWork;
+                        });
                         final Uint8List pdfDocData =
                             await PDFService().createWemoPdf(
                           name: momoNumData.momoNumberList[index!].name,
                           number: momoNumData.momoNumberList[index!].number,
                         );
-  
+
                         PDFService().savePDFFIle(
                           context,
                           momoNumData.momoNumberList[index!].name,
