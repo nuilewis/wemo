@@ -6,7 +6,7 @@ void wemoSnackBar(BuildContext context,
     {required String message, required bool isSuccess}) {
   final customSnackBar = SnackBar(
     behavior: SnackBarBehavior.floating,
-fixed snackbar Ui    duration: const Duration(seconds: 1),
+    duration: const Duration(seconds: 1),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20),
     ),
