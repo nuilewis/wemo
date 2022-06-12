@@ -89,7 +89,7 @@ class _TransactionCardState extends State<TransactionCard> {
             ),
           ),
           const SizedBox(
-            height: 5,
+            height: 1,
           ),
           Row(
             children: [
