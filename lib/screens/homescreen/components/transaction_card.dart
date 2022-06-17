@@ -49,7 +49,7 @@ class _TransactionCardState extends State<TransactionCard> {
                 offset: const Offset(10, 0)),
           ]),
       width: double.infinity,
-      padding: const EdgeInsets.all(kDefaultPadding),
+      padding: const EdgeInsets.only(left: kDefaultPadding, top: kDefaultPadding, bottom: kDefaultPadding/4, right: kDefaultPadding/4 ),
       alignment: Alignment.topLeft,
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -63,13 +63,13 @@ class _TransactionCardState extends State<TransactionCard> {
                     style: Theme.of(context)
                         .textTheme
                         .headline1!
-                        .copyWith(color: Theme.of(context).primaryColor)),
+                        .copyWith(color: Theme.of(context).primaryColor, fontSize: 24),),
                 TextSpan(
                     text: " FCFA",
                     style: Theme.of(context)
                         .textTheme
                         .headline2!
-                        .copyWith(color: Theme.of(context).primaryColor)),
+                        .copyWith(color: Theme.of(context).primaryColor.withOpacity(.5), fontSize: 24)),
               ],
             ),
           ),
