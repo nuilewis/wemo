@@ -108,13 +108,18 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                             key: numberKey,
                             maxLength: 9,
                             textAlign: TextAlign.center,
+                            
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1!
                                 .copyWith(fontSize: 20),
                             keyboardType: TextInputType.number,
                             controller: numberController,
+                            
                             decoration: wemoTextFieldDecoration.copyWith(
+                            
+                          prefixIcon: const SizedBox(width: kDefaultPadding*4,),
+                       
                                 suffixIcon: IconButton(
                                     icon: SvgPicture.asset(
                                       "assets/svg/contact_icon.svg",
@@ -135,7 +140,9 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                                         });
                                       }
                                     }),
-                                hintText: "Number"),
+                                hintText: "Number",
+                               
+                                ),
                             validator: (value) {
                               if (value == null ||
                                   value.isEmpty ||
@@ -146,6 +153,18 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
 
                               return null;
                             },
+
+                            onChanged: (value){
+
+                      
+                              
+                              setState(() {
+                                
+                                recieverName=null;
+                              });
+
+                            },
+              
                           ),
                         ],
                       )
@@ -177,6 +196,8 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
 
                     return null;
                   },
+
+               
                 ),
                 const SizedBox(height: kDefaultPadding),
                 // widget.isSendingThroughNumber!
@@ -259,7 +280,7 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                             ? TransactionService.calculateCharges(amount!)
                             : amount!,
                         ref: refController.text,
-                        name: recieverName!,
+                        name: recieverName ?? "",
 
                         number: widget.isSendingThroughNumber!
                             ? numberController.text
