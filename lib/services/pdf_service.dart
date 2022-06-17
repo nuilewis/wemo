@@ -124,14 +124,14 @@ class PDFService {
         }),
       ),
     );
-    return pdf.save();
+    return await pdf.save();
   }
 
   Future<void> savePDFFIle(
       BuildContext context, String fileName, Uint8List fileData) async {
     late Directory outputDir;
     //Check permissions and Do the needful
-    checkPermission();
+    await checkPermission();
     if (Platform.isAndroid) {
       outputDir = Directory("/storage/emulated/0/Documents");
     
@@ -143,25 +143,29 @@ class PDFService {
     final file = File(filePath);
     //Write the file to disk
     await file.writeAsBytes(fileData).then((value) {
+        
       return wemoSnackBar(context, message: "Saved!", isSuccess: true);
     });
   }
 }
 
-checkPermission() async {
+Future<void> checkPermission() async {
+
   ///Manage External Storage Permission
-  Permission manageExternalStoragePermission = Permission.manageExternalStorage;
+  Permission manageExternalStoragePermission =  Permission.manageExternalStorage;
   if (await manageExternalStoragePermission.status.isGranted) {
+
     return;
   } else {
-    manageExternalStoragePermission.request();
+    await manageExternalStoragePermission.request();
   }
 
   ///Storage Permission
-  Permission storagePermission = Permission.storage;
+  Permission storagePermission =  Permission.storage;
   if (await storagePermission.isGranted) {
     return;
   } else {
-    storagePermission.request();
+   await storagePermission.request();
   }
+
 }
