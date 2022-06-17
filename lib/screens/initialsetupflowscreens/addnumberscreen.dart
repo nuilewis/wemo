@@ -88,13 +88,14 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                               padding: const EdgeInsets.only(
                                   top: kDefaultPadding * 3),
                               child: IconButton(
-                                  onPressed: () {
-                                    Navigator.pop(context);
-                                  },
-                                  icon: SvgPicture.asset(
-                                    "assets/svg/back_icon.svg",
-                                    color: Theme.of(context).iconTheme.color,
-                                  )),
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                icon: SvgPicture.asset(
+                                  "assets/svg/back_icon.svg",
+                                  color: Theme.of(context).iconTheme.color,
+                                ),
+                              ),
                             )
                           : const Spacer(),
                       const SizedBox(height: kDefaultPadding),
@@ -118,6 +119,7 @@ class _AddNumberScreenState extends State<AddNumberScreen> {
                       ),
                       const SizedBox(height: kDefaultPadding / 2),
                       TextFormField(
+                    
                         key: nameKey,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
