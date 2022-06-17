@@ -231,7 +231,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               padding: EdgeInsets.zero,
                               itemBuilder: (context, index) {
                                 List<Transaction> transactionList =
-                                    transactionData.transactionsList;
+                                    transactionData.transactionsList.reversed.toList();
 
                                 return TransactionCard(
                                     onDelete: () {
