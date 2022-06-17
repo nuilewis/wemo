@@ -41,7 +41,7 @@ class QrService {
       ///Returning the picture data as a Uint8List
 
       final picture =
-          await painter.toImageData(4096, format: ImageByteFormat.png);
+          await painter.toImageData(2048, format: ImageByteFormat.png);
 
       final Uint8List pictureUint8List = picture!.buffer.asUint8List();
       // await writeToFile(picData, imagePath);
