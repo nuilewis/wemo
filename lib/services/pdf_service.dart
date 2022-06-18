@@ -18,12 +18,12 @@ class PDFService {
 
     const PdfColor kPdfPurple = PdfColor.fromInt(0xFF531CF7);
     const PdfColor kPdfDark = PdfColor.fromInt(0xFF353535);
-   // const PdfColor kPdfTransparent = PdfColor.fromInt(0x00ffffff);
-   // const PdfColor kPdfWhite = PdfColor.fromInt(0xffffffff);
+    // const PdfColor kPdfTransparent = PdfColor.fromInt(0x00ffffff);
+    // const PdfColor kPdfWhite = PdfColor.fromInt(0xffffffff);
 
     //creating and Saving the pdf
     final pdf = pw.Document();
-     final Uint8List? qrImageData = await QrService().createQRImage(qrData);
+    final Uint8List? qrImageData = await QrService().createQRImage(qrData);
 
     final wemoLogo = (await rootBundle.load("assets/images/wemo_logo.png"))
         .buffer
@@ -35,8 +35,6 @@ class PDFService {
         await rootBundle.load("assets/fonts/Urbanist-SemiBold.ttf");
     final urbanist = pw.Font.ttf(fontData);
     final urbanistBold = pw.Font.ttf(fontDataBold);
-
-
 
 ////------------Building the Page Template--------///
     pdf.addPage(
@@ -134,7 +132,6 @@ class PDFService {
     await checkPermission();
     if (Platform.isAndroid) {
       outputDir = Directory("/storage/emulated/0/Documents");
-    
     } else if (Platform.isIOS) {
       outputDir = await getApplicationDocumentsDirectory();
     }
@@ -143,29 +140,26 @@ class PDFService {
     final file = File(filePath);
     //Write the file to disk
     await file.writeAsBytes(fileData).then((value) {
-        
       return wemoSnackBar(context, message: "Saved!", isSuccess: true);
     });
   }
 }
 
 Future<void> checkPermission() async {
-
-  ///Manage External Storage Permission
-  Permission manageExternalStoragePermission =  Permission.manageExternalStorage;
-  if (await manageExternalStoragePermission.status.isGranted) {
-
-    return;
-  } else {
-    await manageExternalStoragePermission.request();
-  }
+  ////Manage External Storage Permission
+  // Permission writeExternalStoragePermission = Permission.
+  // if (await writeExternalStoragePermission.status.isGranted) {
+  //
+  //   return;
+  // } else {
+  //   await writeExternalStoragePermission.request();
+  // }
 
   ///Storage Permission
-  Permission storagePermission =  Permission.storage;
+  Permission storagePermission = Permission.storage;
   if (await storagePermission.isGranted) {
     return;
   } else {
-   await storagePermission.request();
+    await storagePermission.request();
   }
-
 }
