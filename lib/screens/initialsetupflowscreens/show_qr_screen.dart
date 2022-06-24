@@ -18,7 +18,7 @@ class ShowQRCodeScreen extends StatefulWidget {
 
   final VoidCallback? navigateToNextPage;
   final VoidCallback? navigateToPreviousPage;
-  final bool? isCalledFromHomeScreen;
+    final bool? isCalledFromHomeScreen;
   final bool? onRecievedTapped;
 
   const ShowQRCodeScreen({
@@ -27,7 +27,7 @@ class ShowQRCodeScreen extends StatefulWidget {
     this.navigateToNextPage,
     this.navigateToPreviousPage,
     this.onRecievedTapped = false,
-    this.isCalledFromHomeScreen = false,
+    this.isCalledFromHomeScreen= false,
   }) : super(key: key);
 
   @override
@@ -60,7 +60,7 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
           momoNumData.momoNumberList.indexOf(momoNumData.momoNumberList.last);
       return Container(
         height: widget.onRecievedTapped!
-            ? screenSize.height * .65
+            ? screenSize.height * .7
             : screenSize.height * .75,
         decoration: BoxDecoration(
           color: Theme.of(context).scaffoldBackgroundColor,
@@ -83,7 +83,7 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              const SizedBox(height: 25),
+              const SizedBox(height: kDefaultPadding),
               Text(
                 "Here's your Wemo Code",
                 style: Theme.of(context).textTheme.headline1,
@@ -110,9 +110,8 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
               const Spacer(
                 flex: 2,
               ),
-              widget.onRecievedTapped!
-                  ? const SizedBox()
-                  : WemoButton(
+       
+                   WemoButton(
                       textColor: Colors.white,
                       title: "Save",
                       isDoingWork: isDoingWork,
@@ -153,9 +152,22 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
                           ///will rather push to the homescreen.
                         }
                       }),
-              const SizedBox(
-                height: 40,
-              )
+
+                    const  SizedBox(height: kDefaultPadding,),
+
+                      ///Skip Button
+             widget.onRecievedTapped!? const SizedBox(height: 0,): GestureDetector(
+              onTap: (){
+                HapticFeedback.lightImpact();
+                Feedback.forTap(context);
+                 Navigator.popAndPushNamed(context, HomeScreen.id);
+              },
+               child: Padding(
+                 padding: const EdgeInsets.all(kDefaultPadding),
+                 child: Text("Skip", style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Theme.of(context).primaryColor),),
+               ),
+             ),
+           const Spacer(),
             ],
           ),
         ),
