@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 
 void wemoSnackBar(BuildContext context,
-    {required String message, required bool isSuccess}) {
+    {required String message, required bool isSuccess, int? duration}) {
   final customSnackBar = SnackBar(
     behavior: SnackBarBehavior.floating,
-    duration: const Duration(seconds: 1),
+    duration:  Duration(seconds: duration?? 1),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(20),
     ),
