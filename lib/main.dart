@@ -17,6 +17,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   wemoSharedPrefs = await SharedPreferences.getInstance();
   loadMomoSPData();
+
   loadTransactionSPData();
   startupCount = wemoSharedPrefs.getInt(startupCountKey);
   await wemoSharedPrefs.setInt(startupCountKey, 1);
