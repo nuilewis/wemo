@@ -1,5 +1,7 @@
 import 'dart:io';
+import 'dart:isolate';
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
@@ -16,6 +18,9 @@ class PDFService {
       {required String name, required String number}) async {
     String qrData = QrService().joinNameNUmber(number: number, name: name);
 
+    // Stopwatch? timer = Stopwatch()..start();
+    // print("stopwatch started");
+
     const PdfColor kPdfPurple = PdfColor.fromInt(0xFF531CF7);
     const PdfColor kPdfDark = PdfColor.fromInt(0xFF353535);
     // const PdfColor kPdfTransparent = PdfColor.fromInt(0x00ffffff);
@@ -23,7 +28,7 @@ class PDFService {
 
     //creating and Saving the pdf
     final pdf = pw.Document();
-    final Uint8List? qrImageData = await QrService().createQRImage(qrData);
+    final qrImageData = await QrService().createQRImage(qrData);
 
     final wemoLogo = (await rootBundle.load("assets/images/wemo_logo.png"))
         .buffer
@@ -122,11 +127,17 @@ class PDFService {
         }),
       ),
     );
+
+   // print("pdf creator executed in ${timer.elapsed} seconds");
+   //final Uint8List finalPdf = await compute(pdfSave, pdf);
     return await pdf.save();
   }
 
+
   Future<void> savePDFFIle(
       BuildContext context, String fileName, Uint8List fileData) async {
+      //  final Stopwatch timer = Stopwatch()..start();
+       // print("saving pdf timer started");
     late Directory outputDir;
     //Check permissions and Do the needful
     await checkPermission();
@@ -137,10 +148,17 @@ class PDFService {
     }
 
     String filePath = "${outputDir.path}/$fileName Wemo Code.pdf";
+
     final file = File(filePath);
     //Write the file to disk
+
+    ///Spawing a New isolate to save the file and remove the lag
     await file.writeAsBytes(fileData).then((value) {
-      return wemoSnackBar(context, message: "Saved!", isSuccess: true);
+     // print("Saving pdf lasted for ${timer.elapsed} seconds");
+      return wemoSnackBar(context,
+          message: "Saved to Documents !", isSuccess: true, duration: 3);
+
+          
     });
   }
 }
@@ -163,3 +181,11 @@ Future<void> checkPermission() async {
     await storagePermission.request();
   }
 }
+
+
+// Future<Uint8List> pdfSave(pw.Document pdf) async{
+
+//   Stopwatch timer = Stopwatch()..start();
+//   print("saving stopwatch started");
+//   return await pdf.save().then((value) {print("returning unit8lis of pdf lasted ${timer.elapsed}"); return value;});
+//  }
