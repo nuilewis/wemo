@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +19,7 @@ class ShowQRCodeScreen extends StatefulWidget {
 
   final VoidCallback? navigateToNextPage;
   final VoidCallback? navigateToPreviousPage;
-    final bool? isCalledFromHomeScreen;
+  final bool? isCalledFromHomeScreen;
   final bool? onRecievedTapped;
 
   const ShowQRCodeScreen({
@@ -27,7 +28,7 @@ class ShowQRCodeScreen extends StatefulWidget {
     this.navigateToNextPage,
     this.navigateToPreviousPage,
     this.onRecievedTapped = false,
-    this.isCalledFromHomeScreen= false,
+    this.isCalledFromHomeScreen = false,
   }) : super(key: key);
 
   @override
@@ -89,6 +90,12 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
                 style: Theme.of(context).textTheme.headline1,
                 textAlign: TextAlign.center,
               ),
+              const SizedBox( height: 10,),
+              Text(
+                "Scan this code with the sender's camera",
+                style: Theme.of(context).textTheme.bodyText2,
+                textAlign: TextAlign.center,
+              ),
               const Spacer(),
               ShowQRCode(
                 data: QrService().joinNameNUmber(
@@ -110,64 +117,80 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
               const Spacer(
                 flex: 2,
               ),
-       
-                   WemoButton(
-                      textColor: Colors.white,
-                      title: "Save",
-                      isDoingWork: isDoingWork,
-                      onPressed: () async {
+
+              WemoButton(
+                  textColor: Colors.white,
+                  title: "Save",
+                  isDoingWork: isDoingWork,
+                  onPressed: () async {
+                    HapticFeedback.lightImpact();
+                    Feedback.forTap(context);
+                    setState(() {
+                      isDoingWork = !isDoingWork;
+                    });
+                    final Uint8List pdfDocData =
+                        await PDFService().createWemoPdf(
+                      name: momoNumData.momoNumberList[index!].name,
+                      number: momoNumData.momoNumberList[index!].number,
+                    );
+
+                    ///Creating a new isolate to save the pdf file so the UI stays smooth
+                    ///
+
+                  
+                   PDFService().savePDFFIle(
+                      context,
+                      momoNumData.momoNumberList[index!].name,
+                      pdfDocData,
+                    );
+
+                    if (widget.isCalledFromHomeScreen == true) {
+                      debugPrint(
+                          "qr screen is popping until to return to homescreen");
+                      Navigator.popUntil(
+                          context, ModalRoute.withName(HomeScreen.id));
+
+                      /// of the bottom sheet was called from the homescreen ie the user added a number,
+                      /// then instead of pushing a new homescreen over the old homescreen, rather pop the current
+                      /// bottomsheet plus the underlying add number page.
+                    } else {
+                      debugPrint("qr screen is pushing homescreen");
+                      Navigator.popAndPushNamed(context, HomeScreen.id);
+
+                      ///In this case, the bottom sheet was called from the initial setup/splash screen
+                      ///therefore no homesceen has been called to the navigator stack, and popping both pages as done
+                      ///above will result to a black screen being displayed, to prevent this, this section
+                      ///will rather push to the homescreen.
+                    }
+                  }),
+
+              const SizedBox(
+                height: kDefaultPadding/2,
+              ),
+
+              ///Skip Button
+              widget.onRecievedTapped!
+                  ? const SizedBox(
+                      height: 0,
+                    )
+                  : GestureDetector(
+                      onTap: () {
                         HapticFeedback.lightImpact();
                         Feedback.forTap(context);
-                        setState(() {
-                          isDoingWork = !isDoingWork;
-                        });
-                        final Uint8List pdfDocData =
-                            await PDFService().createWemoPdf(
-                          name: momoNumData.momoNumberList[index!].name,
-                          number: momoNumData.momoNumberList[index!].number,
-                        );
-
-                       await PDFService().savePDFFIle(
-                          context,
-                          momoNumData.momoNumberList[index!].name,
-                          pdfDocData,
-                        );
-
-                        if (widget.isCalledFromHomeScreen == true) {
-                          debugPrint(
-                              "qr screen is popping until to return to homescreen");
-                          Navigator.popUntil(
-                              context, ModalRoute.withName(HomeScreen.id));
-
-                          /// of the bottom sheet was called from the homescreen ie the user added a number,
-                          /// then instead of pushing a new homescreen over the old homescreen, rather pop the current
-                          /// bottomsheet plus the underlying add number page.
-                        } else {
-                          debugPrint("qr screen is pushing homescreen");
-                          Navigator.popAndPushNamed(context, HomeScreen.id);
-
-                          ///In this case, the bottom sheet was called from the initial setup/splash screen
-                          ///therefore no homesceen has been called to the navigator stack, and popping both pages as done
-                          ///above will result to a black screen being displayed, to prevent this, this section
-                          ///will rather push to the homescreen.
-                        }
-                      }),
-
-                    const  SizedBox(height: kDefaultPadding,),
-
-                      ///Skip Button
-             widget.onRecievedTapped!? const SizedBox(height: 0,): GestureDetector(
-              onTap: (){
-                HapticFeedback.lightImpact();
-                Feedback.forTap(context);
-                 Navigator.popAndPushNamed(context, HomeScreen.id);
-              },
-               child: Padding(
-                 padding: const EdgeInsets.all(kDefaultPadding),
-                 child: Text("Skip", style: Theme.of(context).textTheme.bodyText2!.copyWith(color: Theme.of(context).primaryColor),),
-               ),
-             ),
-           const Spacer(),
+                        Navigator.popAndPushNamed(context, HomeScreen.id);
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(kDefaultPadding),
+                        child: Text(
+                          "Skip",
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyText2!
+                              .copyWith(color: Theme.of(context).primaryColor, fontSize: 18),
+                        ),
+                      ),
+                    ),
+              const Spacer(),
             ],
           ),
         ),
