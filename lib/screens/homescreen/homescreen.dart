@@ -33,6 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final PageController pageController = PageController(viewportFraction: .8);
   bool isExpandable = false;
+  List<bool> onSelected = [];
 
   @override
   void dispose() {
@@ -71,6 +72,11 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, momoNumData, transactionData, child) {
         momoNumData.getSavedMomoNUmber();
         transactionData.getSavedTransactions();
+//make all values of onselected false based on the number of items in the list
+        for (int i = 0; i < momoNumData.momoNumberList.length; i++) {
+          onSelected.add(false);
+        }
+        
         return WillPopScope(
           onWillPop: () async {
             return false;
@@ -126,31 +132,44 @@ class _HomeScreenState extends State<HomeScreen> {
                                 itemCount: momoNumData.momoNumberList.length,
                                 onPageChanged: (index) {
                                   ///Setting the current index so that
+
                                   setState(() {
                                     currentIndex = index;
+                                    for (int i = 0;
+                                        i < momoNumData.momoNumberList.length;
+                                        i++) {
+                                      onSelected[i] = false;
+                                    }
+                                   // onSelected[index] = true;
                                   });
                                   debugPrint("current index is $currentIndex");
                                 },
                                 itemBuilder: (context, index) {
+
+                                  onSelected[currentIndex]=true;
+
                                   List<MomoNumber> momoNumbersList =
                                       momoNumData.momoNumberList;
+                                     
 
                                   return Center(
                                     child: PhoneNumberCard(
-                                        onDelete: () {
-                                          HapticFeedback.lightImpact();
-                                          Feedback.forTap(context);
-                                          momoNumData.deleteMomoNUmber(context,
-                                              index: index);
-                                        },
-                                        number: momoNumbersList[index].number,
-                                        name: momoNumbersList[index].name,
-                                        network: momoNumbersList[index]
-                                            .network
-                                            .toString() //convert network type to string
-                                            .substring(
-                                                12) //remove "NetworkType." from converted string to get actual network
-                                            .toUpperCase()),
+                                      onSelected: onSelected[index],
+                                      onDelete: () {
+                                        HapticFeedback.lightImpact();
+                                        Feedback.forTap(context);
+                                        momoNumData.deleteMomoNUmber(context,
+                                            index: index);
+                                      },
+                                      number: momoNumbersList[index].number,
+                                      name: momoNumbersList[index].name,
+                                      network: momoNumbersList[index]
+                                          .network
+                                          .toString() //convert network type to string
+                                          .substring(
+                                              12) //remove "NetworkType." from converted string to get actual network
+                                          .toUpperCase(),
+                                    ),
                                   );
                                 },
                               ),
@@ -231,7 +250,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               padding: EdgeInsets.zero,
                               itemBuilder: (context, index) {
                                 List<Transaction> transactionList =
-                                    transactionData.transactionsList.reversed.toList();
+                                    transactionData.transactionsList.reversed
+                                        .toList();
 
                                 return TransactionCard(
                                     onDelete: () {
