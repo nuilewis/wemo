@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:wemo/constants.dart';
 import 'package:wemo/global_components/wemo_button.dart';
+import 'package:wemo/global_components/wemo_drawer.dart';
 import 'package:wemo/models/transaction_model.dart';
 import 'package:wemo/providers/momo_num_provider.dart';
 import 'package:wemo/providers/transaction_provider.dart';
@@ -72,11 +74,11 @@ class _HomeScreenState extends State<HomeScreen> {
       builder: (context, momoNumData, transactionData, child) {
         momoNumData.getSavedMomoNUmber();
         transactionData.getSavedTransactions();
-//make all values of onselected false based on the number of items in the list
+        //make all values of onselected false based on the number of items in the list
         for (int i = 0; i < momoNumData.momoNumberList.length; i++) {
           onSelected.add(false);
         }
-        
+
         return WillPopScope(
           onWillPop: () async {
             return false;
@@ -96,13 +98,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       const SizedBox(
                         height: kDefaultPadding2x * 2,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: kDefaultPadding2x),
-                        child: Text(
-                          "Welcome Back!",
-                          style: Theme.of(context).textTheme.headline1,
-                        ),
-                      ),
+                      const WelcomeTitleAndMenuButton(),
 
                       momoNumData.momoNumberList.isEmpty
                           ? Align(
@@ -140,17 +136,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                         i++) {
                                       onSelected[i] = false;
                                     }
-                                   // onSelected[index] = true;
+                                    // onSelected[index] = true;
                                   });
                                   debugPrint("current index is $currentIndex");
                                 },
                                 itemBuilder: (context, index) {
-
-                                  onSelected[currentIndex]=true;
+                                  onSelected[currentIndex] = true;
 
                                   List<MomoNumber> momoNumbersList =
                                       momoNumData.momoNumberList;
-                                     
 
                                   return Center(
                                     child: PhoneNumberCard(
@@ -225,8 +219,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                           .textTheme
                                           .headline1!
                                           .copyWith(
-                                              color: Theme.of(context)
-                                                  .primaryColor),
+                                            color:
+                                                Theme.of(context).primaryColor,
+                                            fontSize: 20,
+                                          ),
                                       textAlign: TextAlign.center,
                                     ),
                                     const SizedBox(
@@ -359,9 +355,38 @@ class _HomeScreenState extends State<HomeScreen> {
                 )
               ],
             ),
+            endDrawer: const WemoDrawer(),
           ),
         );
       },
     );
+  }
+}
+
+class WelcomeTitleAndMenuButton extends StatelessWidget {
+  const WelcomeTitleAndMenuButton({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.only(
+            left: kDefaultPadding2x, right: kDefaultPadding),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              "Welcome Back!",
+              style: Theme.of(context).textTheme.headline1,
+            ),
+            IconButton(
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+              icon: SvgPicture.asset("assets/svg/menu_alt_icon.svg"),
+            ),
+          ],
+        ));
   }
 }
