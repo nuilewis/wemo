@@ -87,8 +87,6 @@ Map<int, String> monthsOfYear = {
   12: "December",
 };
 
-
-
 ///-----------------Verions nUmber ------------////
 
-String versionNumber = "1.1.5";
+String versionNumber = "1.1.6";
