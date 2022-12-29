@@ -1,14 +1,13 @@
 import 'dart:io';
-import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:wemo/constants.dart';
 import 'package:wemo/global_components/wemo_snackbar.dart';
-
 import 'package:wemo/services/qr_service.dart';
 
 class PDFService {
@@ -126,16 +125,15 @@ class PDFService {
       ),
     );
 
-   // print("pdf creator executed in ${timer.elapsed} seconds");
-   //final Uint8List finalPdf = await compute(pdfSave, pdf);
+    // print("pdf creator executed in ${timer.elapsed} seconds");
+    //final Uint8List finalPdf = await compute(pdfSave, pdf);
     return await pdf.save();
   }
 
-
   Future<void> savePDFFIle(
       BuildContext context, String fileName, Uint8List fileData) async {
-      //  final Stopwatch timer = Stopwatch()..start();
-       // print("saving pdf timer started");
+    //  final Stopwatch timer = Stopwatch()..start();
+    // print("saving pdf timer started");
     late Directory outputDir;
     //Check permissions and Do the needful
     await checkPermission();
@@ -152,11 +150,9 @@ class PDFService {
 
     ///Spawing a New isolate to save the file and remove the lag
     await file.writeAsBytes(fileData).then((value) {
-     // print("Saving pdf lasted for ${timer.elapsed} seconds");
+      // print("Saving pdf lasted for ${timer.elapsed} seconds");
       return wemoSnackBar(context,
           message: "Saved to Documents !", isSuccess: true, duration: 3);
-
-          
     });
   }
 }
@@ -179,7 +175,6 @@ Future<void> checkPermission() async {
     await storagePermission.request();
   }
 }
-
 
 // Future<Uint8List> pdfSave(pw.Document pdf) async{
 

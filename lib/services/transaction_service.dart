@@ -62,8 +62,6 @@ class TransactionService {
 
     ///add calculated charges to the amount
 
-    amountWithCharges = amount + chargesToAdd;
-
-    return amountWithCharges;
+    return chargesToAdd;
   }
 }

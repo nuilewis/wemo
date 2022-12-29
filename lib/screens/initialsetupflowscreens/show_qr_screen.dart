@@ -1,7 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -10,6 +8,7 @@ import 'package:wemo/screens/homescreen/homescreen.dart';
 import 'package:wemo/screens/recievescreen/components/show_qr.dart';
 import 'package:wemo/services/pdf_service.dart';
 import 'package:wemo/services/qr_service.dart';
+
 import '../../constants.dart';
 import '../../global_components/wemo_button.dart';
 
@@ -90,7 +89,9 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
                 style: Theme.of(context).textTheme.headline1,
                 textAlign: TextAlign.center,
               ),
-              const SizedBox( height: 10,),
+              const SizedBox(
+                height: 10,
+              ),
               Text(
                 "Scan this code with the sender's camera",
                 style: Theme.of(context).textTheme.bodyText2,
@@ -137,8 +138,7 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
                     ///Creating a new isolate to save the pdf file so the UI stays smooth
                     ///
 
-                  
-                   PDFService().savePDFFIle(
+                    PDFService().savePDFFIle(
                       context,
                       momoNumData.momoNumberList[index!].name,
                       pdfDocData,
@@ -165,7 +165,7 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
                   }),
 
               const SizedBox(
-                height: kDefaultPadding/2,
+                height: kDefaultPadding / 2,
               ),
 
               ///Skip Button
@@ -186,7 +186,9 @@ class _ShowQRCodeScreenState extends State<ShowQRCodeScreen> {
                           style: Theme.of(context)
                               .textTheme
                               .bodyText2!
-                              .copyWith(color: Theme.of(context).primaryColor, fontSize: 18),
+                              .copyWith(
+                                  color: Theme.of(context).primaryColor,
+                                  fontSize: 18),
                         ),
                       ),
                     ),

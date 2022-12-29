@@ -9,12 +9,13 @@ import 'package:wemo/services/transaction_service.dart';
 import 'package:wemo/services/ussd_service.dart';
 
 import '../../constants.dart';
-
 import '../../providers/send_money_provider.dart';
 
 class ConfirmAndSendDialog extends StatefulWidget {
+  final VoidCallback onBackButtonPressed;
   const ConfirmAndSendDialog({
     Key? key,
+    required this.onBackButtonPressed,
   }) : super(key: key);
 
   @override
@@ -110,9 +111,6 @@ class _ConfirmAndSendDialogState extends State<ConfirmAndSendDialog> {
 //Add an attempted transaction
                       transactionData.addTransaction(
                         Transaction(
-                          // charges: TransactionService.calculateCharges(
-                          //       sendMoneyData.moneyToSend!.amount) -
-                          //      sendMoneyData.moneyToSend!.amount,
                           name: sendMoneyData.moneyToSend!.name,
                           network: TransactionService.determineNetwork(
                                   sendMoneyData.moneyToSend!.number)
@@ -123,34 +121,6 @@ class _ConfirmAndSendDialogState extends State<ConfirmAndSendDialog> {
                           amount: sendMoneyData.moneyToSend!.amount,
                         ),
                       );
-                      // await WemoUSSDService().requestMtnMomo(
-                      //   context,
-                      //   number: sendMoneyData.moneyToSend!.number,
-                      //   pin: sendMoneyData.moneyToSend!.pin,
-                      //   amount: sendMoneyData.moneyToSend!.amount,
-                      // );
-
-                      // if (transactionData.transactionResult != null) {
-                      //   return;
-                      // } else if (transactionData.transactionResult!
-                      //     .contains("succesful transfer")) {
-                      //   ///Add a new transaction if the transaction is successful
-                      //   transactionData.addTransaction(
-                      //     Transaction(
-                      //       charges: TransactionService.calculateCharges(
-                      //               sendMoneyData.moneyToSend!.amount) -
-                      //           sendMoneyData.moneyToSend!.amount,
-                      //       name: sendMoneyData.moneyToSend!.name,
-                      //       network: TransactionService.determinNetwork(
-                      //               sendMoneyData.moneyToSend!.number)
-                      //           .toString(),
-                      //       transactionType: TransactionType.sent,
-                      //       number: sendMoneyData.moneyToSend!.number,
-                      //       time: DateTime.now(),
-                      //       amount: sendMoneyData.moneyToSend!.amount,
-                      //     ),
-                      //   );
-                      // }
 
                       ///Also pop the page when you click send
 
@@ -165,13 +135,9 @@ class _ConfirmAndSendDialogState extends State<ConfirmAndSendDialog> {
                   WemoButton(
                     isSmall: true,
                     isSecondary: true,
-                    title: "Cancel",
+                    title: "Back",
                     showIcon: false,
-                    onPressed: () {
-                      HapticFeedback.lightImpact();
-                      Feedback.forTap(context);
-                      Navigator.pop(context);
-                    },
+                    onPressed: widget.onBackButtonPressed,
                   ),
                 ],
               ),

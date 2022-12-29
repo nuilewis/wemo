@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:wemo/global_components/wemo_button.dart';
 import 'package:wemo/services/contact_picker_service.dart';
 import 'package:wemo/services/transaction_service.dart';
+
 import '../../constants.dart';
 import '../../providers/send_money_provider.dart';
 
@@ -39,6 +40,8 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
   final Key numberKey = GlobalKey();
 
   bool addCharges = false;
+  int? charges;
+  int? amount;
   String? recieverName;
 
   @override
@@ -108,41 +111,38 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                             key: numberKey,
                             maxLength: 9,
                             textAlign: TextAlign.center,
-                            
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyText1!
                                 .copyWith(fontSize: 20),
                             keyboardType: TextInputType.number,
                             controller: numberController,
-                            
                             decoration: wemoTextFieldDecoration.copyWith(
-                            
-                          prefixIcon: const SizedBox(width: kDefaultPadding*4,),
-                       
-                                suffixIcon: IconButton(
-                                    icon: SvgPicture.asset(
-                                      "assets/svg/contact_icon.svg",
-                                      color: Theme.of(context).primaryColor,
-                                    ),
-                                    onPressed: () async {
-                                      HapticFeedback.lightImpact();
-                                      Feedback.forTap(context);
+                              prefixIcon: const SizedBox(
+                                width: kDefaultPadding * 4,
+                              ),
+                              suffixIcon: IconButton(
+                                  icon: SvgPicture.asset(
+                                    "assets/svg/contact_icon.svg",
+                                    color: Theme.of(context).primaryColor,
+                                  ),
+                                  onPressed: () async {
+                                    HapticFeedback.lightImpact();
+                                    Feedback.forTap(context);
 
-                                      Map<String, String?> pickedContact =
-                                          await ContactPickerService()
-                                              .pickContact();
-                                      if (pickedContact["number"] != null) {
-                                        setState(() {
-                                          numberController.text =
-                                              pickedContact["number"]!;
-                                          recieverName = pickedContact["name"];
-                                        });
-                                      }
-                                    }),
-                                hintText: "Number",
-                               
-                                ),
+                                    Map<String, String?> pickedContact =
+                                        await ContactPickerService()
+                                            .pickContact();
+                                    if (pickedContact["number"] != null) {
+                                      setState(() {
+                                        numberController.text =
+                                            pickedContact["number"]!;
+                                        recieverName = pickedContact["name"];
+                                      });
+                                    }
+                                  }),
+                              hintText: "Number",
+                            ),
                             validator: (value) {
                               if (value == null ||
                                   value.isEmpty ||
@@ -153,18 +153,11 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
 
                               return null;
                             },
-
-                            onChanged: (value){
-
-                      
-                              
+                            onChanged: (value) {
                               setState(() {
-                                
-                                recieverName=null;
+                                recieverName = null;
                               });
-
                             },
-              
                           ),
                         ],
                       )
@@ -187,6 +180,16 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                       .copyWith(fontSize: 20),
                   keyboardType: TextInputType.number,
                   controller: amountController,
+                  onChanged: (value) {
+                    amount = int.tryParse(amountController.text);
+                    if (addCharges == true) {
+                      charges = amountController.text.isNotEmpty
+                          ? TransactionService.calculateCharges(amount!)
+                          : null;
+                    }
+
+                    setState(() {});
+                  },
                   decoration:
                       wemoTextFieldDecoration.copyWith(hintText: "Amount"),
                   validator: (value) {
@@ -196,39 +199,9 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
 
                     return null;
                   },
-
-               
                 ),
                 const SizedBox(height: kDefaultPadding),
-                // widget.isSendingThroughNumber!
-                //     ? const SizedBox()
-                //     : Align(
-                //         alignment: Alignment.centerLeft,
-                //         child: Text(
-                //           "Reference",
-                //           style: Theme.of(context).textTheme.bodyText1,
-                //         ),
-                //       ),
-                // const SizedBox(
-                //   height: 5,
-                // ),
 
-                // ///Ref Field
-                // widget.isSendingThroughNumber!
-                //     ? const SizedBox()
-                //     : TextFormField(
-                //         textAlign: TextAlign.center,
-                //         style: Theme.of(context)
-                //             .textTheme
-                //             .bodyText1!
-                //             .copyWith(fontSize: 20),
-                //         controller: refController,
-                //         decoration: wemoTextFieldDecoration.copyWith(
-                //             hintText: "Reference"),
-                //       ),
-                // const SizedBox(
-                //   height: kDefaultPadding - 8,
-                // ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -245,13 +218,36 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
                       onChanged: (bool value) {
                         HapticFeedback.lightImpact();
                         Feedback.forTap(context);
-                        setState(() {
-                          addCharges = value;
-                        });
+
+                        addCharges = value;
+
+                        if (value == true) {
+                          charges = amountController.text.isEmpty
+                              ? null
+                              : TransactionService.calculateCharges(amount!);
+                        } else {
+                          charges == null;
+                        }
+
+                        setState(() {});
                       },
                     )
                   ],
                 ),
+
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    addCharges == true && charges != null
+                        ? "+ $charges FCFA"
+                        : "",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyText1
+                        ?.copyWith(color: Theme.of(context).primaryColor),
+                  ),
+                ),
+
                 const SizedBox(
                   height: kDefaultPadding / 2,
                 ),
@@ -276,8 +272,8 @@ class _InputAmountAndPinDialogState extends State<InputAmountAndPinDialog> {
 
                       ///adding all details of the person we are sending money to to the provider
                       sendMoneyData.sendMoneyToPerson(
-                        amount: addCharges
-                            ? TransactionService.calculateCharges(amount!)
+                        amount: addCharges == true
+                            ? amount! + (charges ?? 0)
                             : amount!,
                         ref: refController.text,
                         name: recieverName ?? "",

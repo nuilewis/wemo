@@ -1,8 +1,9 @@
+import 'package:expandable_page_view/expandable_page_view.dart';
 import 'package:flutter/material.dart';
 import 'package:wemo/constants.dart';
+
 import 'confrim_and_send_dialog.dart';
 import 'input_amount_and_pin_dialog.dart';
-import 'package:expandable_page_view/expandable_page_view.dart';
 
 class SendDialogScreen extends StatefulWidget {
   final String? receiverName;
@@ -35,7 +36,9 @@ class _SendDialogScreenState extends State<SendDialogScreen> {
         receiverNumber: widget.receiverNumber,
         navigateToNextPage: navigateToNextDialog,
       ),
-      const ConfirmAndSendDialog(),
+      ConfirmAndSendDialog(
+        onBackButtonPressed: navigateToPreviousDialog,
+      ),
     ];
   }
 
