@@ -44,7 +44,6 @@ class MyApp extends StatelessWidget {
         title: 'Wemo',
         debugShowCheckedModeBanner: false,
         theme: wemoLightTheme(context),
-        //darkTheme: wemoDarkTheme(context),
         initialRoute: startupCount == 0 || startupCount == null
             ? OnboardingScreen.id
             : HomeScreen.id,
