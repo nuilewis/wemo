@@ -1,10 +1,12 @@
-class MomoNumber {
+import 'package:equatable/equatable.dart';
+
+class MomoNumber extends Equatable {
   final String number;
   final String name;
 //  final NetworkType network;
   final String network;
 
-  MomoNumber({
+  const MomoNumber({
     required this.number,
     required this.name,
     required this.network,
@@ -20,4 +22,20 @@ class MomoNumber {
   Map toMap() {
     return {"number": number, "name": name, "network": network};
   }
+
+  ///CopyWith
+
+  MomoNumber copyWith({
+    String? name,
+    String? number,
+    String? network,
+  }) {
+    return MomoNumber(
+        number: number ?? this.number,
+        name: name ?? this.name,
+        network: network ?? this.network);
+  }
+
+  @override
+  List<Object> get props => [name, number, network];
 }
