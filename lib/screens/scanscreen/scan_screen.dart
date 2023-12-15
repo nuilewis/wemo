@@ -39,18 +39,19 @@ class _ScanScreenState extends State<ScanScreen> {
         children: [
           MobileScanner(
               controller: cameraController,
-              allowDuplicates: false,
+              // allowDuplicates: false,
               onDetect: (
-                Barcode barcode,
-                MobileScannerArguments? args,
-              ) {
-                if (barcode.rawValue == null) {
+                  //  Barcode barcode,
+                  BarcodeCapture barcode
+                  //   MobileScannerArguments? args,
+                  ) {
+                if (barcode.barcodes.first.rawValue == null) {
                   debugPrint("Failed to scan QR");
                   wemoSnackBar(context,
                       message: "Failed to Scan Code", isSuccess: false);
                 } else {
                   ///Take the result and split into the name and number
-                  final String resultCode = barcode.rawValue!;
+                  final String resultCode = barcode.barcodes.first.rawValue!;
                   HapticFeedback.heavyImpact();
                   Navigator.pop(context);
                   String receiverNumber = resultCode.substring(0, 9);

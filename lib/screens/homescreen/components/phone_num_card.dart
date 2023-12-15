@@ -11,7 +11,6 @@ class PhoneNumberCard extends StatelessWidget {
     required this.network,
     required this.onDelete,
     required this.onSelected,
-
   }) : super(key: key);
 
   final String number;
@@ -30,17 +29,18 @@ class PhoneNumberCard extends StatelessWidget {
       height: 120,
       width: screenSize.width * .8,
       decoration: BoxDecoration(
-          boxShadow: const [
-             BoxShadow(
-              color:  kPurple20 ,
-              offset: Offset(5, 10),
-              blurRadius: 20,
-              spreadRadius: 8,
-            ),
-          ],
+          // boxShadow: const [
+          //    BoxShadow(
+          //     color:  kPurple20 ,
+          //     offset: Offset(5, 10),
+          //     blurRadius: 20,
+          //     spreadRadius: 8,
+          //   ),
+          // ],
           borderRadius: BorderRadius.circular(kDefaultPadding2x),
           gradient: LinearGradient(
-              colors: onSelected ? [kPurple, kBlue] : [Colors.white, Colors.white],
+              colors:
+                  onSelected ? [kPurple, kBlue] : [Colors.white, Colors.white],
               begin: Alignment.topLeft,
               end: Alignment.bottomRight)),
       // padding: const EdgeInsets.all(kDefaultPadding),
@@ -56,30 +56,30 @@ class PhoneNumberCard extends StatelessWidget {
               children: [
                 Text(
                   number,
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline1!
-                      .copyWith(color: onSelected? Colors.white : Theme.of(context).iconTheme.color),
+                  style: Theme.of(context).textTheme.headline1!.copyWith(
+                      color: onSelected
+                          ? Colors.white
+                          : Theme.of(context).iconTheme.color),
                 ),
                 const SizedBox(
                   height: 5,
                 ),
                 Text(
                   name,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText1!
-                      .copyWith(color: onSelected? Colors.white : Theme.of(context).iconTheme.color),
+                  style: Theme.of(context).textTheme.bodyText1!.copyWith(
+                      color: onSelected
+                          ? Colors.white
+                          : Theme.of(context).iconTheme.color),
                 ),
                 const SizedBox(
                   height: 5,
                 ),
                 Text(
                   network,
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyText2!
-                      .copyWith(color:  onSelected? Colors.white : Theme.of(context).iconTheme.color),
+                  style: Theme.of(context).textTheme.bodyText2!.copyWith(
+                      color: onSelected
+                          ? Colors.white
+                          : Theme.of(context).iconTheme.color),
                 ),
               ],
             ),
@@ -89,10 +89,8 @@ class PhoneNumberCard extends StatelessWidget {
             bottom: kDefaultPadding / 2,
             child: IconButton(
                 onPressed: onDelete,
-                icon: SvgPicture.asset(
-                  "assets/svg/trash_icon.svg",
-                  color:  onSelected? Colors.white : kFuchsia
-                )),
+                icon: SvgPicture.asset("assets/svg/trash_icon.svg",
+                    color: onSelected ? Colors.white : kFuchsia)),
           )
         ],
       ),

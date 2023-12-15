@@ -36,20 +36,20 @@ class WemoButton extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        padding: isDoingWork! ? null: const EdgeInsets.all(kDefaultPadding),
+        padding: isDoingWork! ? null : const EdgeInsets.all(kDefaultPadding),
         alignment: Alignment.center,
-        height: isSmall ? 56 : 64,
+        height: isSmall ? 42 : 52,
         width: double.infinity,
         decoration: BoxDecoration(
           border: isSecondary
-              ? Border.all(color: bgColor ?? kPurple, width: 2)
+              ? Border.all(color: bgColor ?? kPurple, width: 1.5)
               : null,
           borderRadius: BorderRadius.circular(64),
           color: isSecondary ? Colors.transparent : bgColor ?? kPurple,
         ),
         child: isDoingWork!
             ? const Center(
-                child:  CircularProgressIndicator(
+                child: CircularProgressIndicator(
                   backgroundColor: Colors.transparent,
                   valueColor: AlwaysStoppedAnimation(Colors.white),
                 ),
